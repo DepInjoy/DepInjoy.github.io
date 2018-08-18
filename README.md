@@ -16,4 +16,10 @@ hexo generate
 # 发布到server端，通过浏览器访问http://localhost:4000
 hexo server
 ```
+##### 部署
+```
+# 安装插件
+npm install hexo-deployer-git --save
+hexo deploy
+```
 
