@@ -2,6 +2,11 @@
 master: 部署的博客系统<br/>
 source：本地可以编译运行的完整的代码<br/>
 
+##### 博客系统初次搭建
+hexo init
+下载Bluelake主题https://github.com/chaooo/hexo-theme-BlueLake，复制到themes里面
+修改_config.yml
+
 ##### 本地环境搭建
 安装[NodeJs](https://nodejs.org/en/),之后执行```npm install hexo-cli -g```安装hexo<br/>
 下载source分支的代码，分别执行下面的命令
