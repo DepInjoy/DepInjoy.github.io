@@ -3,7 +3,7 @@ layout: post
 title: const修饰符
 date: 2017-3-16 18:04
 category: C
-tags: [C, C++]
+tags: [C, CPP]
 description: 本文描述了const char* 、char *const以及const char **和char * const *的区别。并通过示例展示了在C++中const变量无法通过地址进行修改并解释了原因。
 ---
 

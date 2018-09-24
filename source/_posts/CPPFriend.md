@@ -2,8 +2,8 @@
 layout: post
 title: 友元
 date: 2018-03-25 20:00
-category: C++
-tags: [C++]
+category: CPP
+tags: [CPP]
 description: 友元提供了一种其他的类可以访问该类中的private成员的方式，存在友元函数和友元类两种，本文通过一个示例展示了使用方法。
 ---
 

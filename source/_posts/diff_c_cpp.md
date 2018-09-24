@@ -2,8 +2,8 @@
 layout: post
 title: 面向过程编程和面向对象编程的区别
 date: 2018-03-20 20:00
-category: C++
-tags: [C++]
+category: CPP
+tags: [CPP]
 description: 本文通过一个代码示例展示了面向对象编程思维和处理模式的区别。
 ---
 

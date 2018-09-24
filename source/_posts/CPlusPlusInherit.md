@@ -2,8 +2,8 @@
 layout: post
 title: 继承和动态绑定
 date: 2018-3-22 18:04
-category: C++
-tags: [C++]
+category: CPP
+tags: [CPP]
 description: 本文主要描述了C++中派生类和基类的访问权限、虚函数、纯虚函数以动态绑定的概念，并通过实例来展示对该部分的理解。
 ---
 
