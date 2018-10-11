@@ -1,0 +1,134 @@
+---
+layout: post
+title: 运算符重载
+date: 2018-03-25 20:00
+category: CPP
+tags: [CPP]
+description: 运算符重载可以提高C++提供的运算符的适用范围，使其可以作用于对象。
+---
+
+运算符的重载实质上市函数的重载，运算符的可以被多次重载，根据传入参数的类型来决定调用哪个运算符函数。表达形式：
+
+```c++
+返回值类型 operator 运算符(形参列表)
+```
+
+- 只可以重载已有的运算符，不可以发明新的运算符。
+-  重载时，参数的数量和该运算符数目一致。如果重载为成员函数(此时，它的第一个运算对象自动绑定至隐式this指针，参看示例的重载-运算符)，则参数个数减一，而对于普通的函数，参数个数为运算符数目(参看示例的重载-运算符)。
+- 赋值运算符=只能重载为成员函数(参看示例=运算符)
+
+```c++
+#include <iostream>
+class Complex{
+public:
+	Complex(double r = 0.0, double i = 0.0);
+	Complex operator-(const Complex& c);
+	Complex& operator=(const Complex& c);
+	double real;
+	double imag;
+};
+Complex::Complex(double r, double i){
+	real = r;
+	imag = i;
+}
+
+Complex Complex::operator-(const Complex& c){
+	return Complex(real - c.real, imag - c.imag);
+}
+
+Complex operator+(const Complex& a, const Complex& b){
+	return Complex(a.real + b.real, a.imag + b.imag);
+}
+
+Complex& Complex::operator= (const Complex& c){
+	real = c.real;
+	imag = c.imag;
+	return *this;
+}
+
+int main(int argc, char* argv[]){
+	Complex a(8, 8), b(6, 6);
+	Complex c = a + b;
+	std::cout << "real: " << c.real << " image: " << c.imag << std::endl;  //14,14
+	c = a - b;
+	std::cout << "real: " << c.real << " image: " << c.imag << std::endl; //2,2
+	c = a;
+	std::cout << "real: " << c.real << " image: " << c.imag << std::endl; //8,8
+	system("pause");
+	return 0;
+}
+```
+
+### 运算符重载之深入探讨
+
+看到了清华大学郭炜老师一个很有意思的关于运算符重载关于深浅拷贝的探讨，在这里将相关的过程进行一一的实验总结，首先我们查看下面实现=运算符重载的代码：
+
+```C++
+#include <string>
+class String{
+public:
+	char * str;
+	String() :str(new char[1]){ str[0] = 0; }
+	String& operator=(const char *s);
+	~String(){ delete[]str; }
+};
+String& String::operator=(const char* s)
+{
+	delete[] str;
+	str = new char[strlen(s)+ 1];
+	strcpy_s(str, strlen(s) + 1, s);
+	return *this;
+}
+int main(int argc, char* argv[])
+{
+	String s1,s2;
+    //String s1 = "Hello";	//编译无法通过，此时是类的构造，调用的是String(char*)的构造函数		s1 = "Hello";			//s1.operator=("Hello")
+	std::cout << "s1.str = " << s1.str << std::endl;//Hello
+	s1 = "World";
+	std::cout << "s1.str = " << s1.str << std::endl; //World
+	return 0;
+}
+```
+
+上面的代码可以正常运行，存在一个问题如果通过
+
+```c++
+	s2 = s1;
+	std::cout << "s2.str = " << s2.str << std::endl;
+```
+
+直接进行复制重载，默认的=运算符重载函数会将s2.str也将指向s1.str的地址，那么在析构的时候会出现两次释放内存而出现问题。我们可以再构造一个=运算符重载的成员函数：
+
+```C++
+String& String::operator=(const String& s)
+{
+	delete[] str;
+	str = new char[strlen(s.str) + 1];
+	strcpy_s(str, strlen(s.str) + 1, s.str);
+	return *this;
+}
+```
+
+这样可以避免上面地址重复释放的问题，但是如果执行下面的操作会引入新的问题
+
+```C++
+	s1 = s1;
+	std::cout << "s1.str = " << s1.str << std::endl;
+```
+
+在赋值运算符重载的函数中，我们在刚开始执行便执行 delete[] str; 将str的内存释放掉，而在接下来我们却要访问s.tr，而在s1=s1(有可能出现x = s1, s1 = x)的操作中，s指向this，这样自然会引入新的问题。我们可以在函数的开头来避免s1=s1的后续执行，来避免上述问题：
+
+```C++
+	if (this == &s)
+		return *this;
+```
+
+之后过郭炜老师又探讨了，operator=返回值的问题，=运算符重载返回值存在void、String、String&等情况。而在对运算符重载过程中，我们希望尽可能保持运算符原有的特性，那么对=考虑下面两种情况：
+
+- a=b=c，等价于a.operator=(b.operator=(c))。(void返回值不合理，排除)
+- (a=b)=c，等价于(a.operator=(b)).operator=(c)。在C++中=运算符的返回值是等号左边的引用，a=b的返回值是a的引用。返回值是String&则此次修改只是修改a的值，和b的值无关。
+
+
+
+
+
