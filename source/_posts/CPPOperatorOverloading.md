@@ -59,6 +59,60 @@ int main(int argc, char* argv[]){
 }
 ```
 
+## 运算符重载为友元函数
+
+由于普通函数无法访问私有成员，我们可以将运算符重载为友元来解决该问题。首先看下面的这段代码：
+
+```C++
+#include <iostream>
+class Complex{
+public:
+	Complex(double r = 0.0, double i = 0.0);
+	Complex operator+(double r);
+	double realV(void)	{ return real; }
+	double imagV(void)	{ return imag; }
+private:
+	double real;
+	double imag;
+};
+Complex::Complex(double r, double i){
+	real = r;
+	imag = i;
+}
+Complex Complex::operator+(double r)
+{
+	return Complex(real + r, imag);
+}
+
+int main(int agrc, char* argv[]){
+	Complex c1(6, 8);
+	c1 = c1 + 5;
+	std::cout << "c1.real = " << c1.realV() << " c1.image = " << c1.imagV() << std::endl;	//11,8
+	system("pause");
+	return 0;
+}
+```
+
+上述的代码我们可以成功执行：c1 = c1 + 5(等价于c1=c1.operator+(5)),但是却无法c1=5+c1却无法正常运行。此时我们可以添加全局函数Complex operator+(double r, const Complex& c);来确保正常运行，却无法访问Complex的私有成员real和imag，此时我们可以将该函数声明为友元来解决该问题。
+
+```C++
+friend Complex operator+(double r, const Complex& c);
+```
+
+```C++
+Complex operator+(double r, const Complex& c)
+{
+	return Complex(r + c.real, c.imag);
+}
+```
+
+执行下面的测试代码，成功：
+
+```C++
+	c1 = 5 + c1;
+	std::cout << "c1.real = " << c1.realV() << " c1.image = " << c1.imagV() << std::endl;//16,8
+```
+
 ### 运算符重载之深入探讨
 
 看到了清华大学郭炜老师一个很有意思的关于运算符重载关于深浅拷贝的探讨，在这里将相关的过程进行一一的实验总结，首先我们查看下面实现=运算符重载的代码：
