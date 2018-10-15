@@ -180,7 +180,26 @@ String& String::operator=(const String& s)
 之后过郭炜老师又探讨了，operator=返回值的问题，=运算符重载返回值存在void、String、String&等情况。而在对运算符重载过程中，我们希望尽可能保持运算符原有的特性，那么对=考虑下面两种情况：
 
 - a=b=c，等价于a.operator=(b.operator=(c))。(void返回值不合理，排除)
+
 - (a=b)=c，等价于(a.operator=(b)).operator=(c)。在C++中=运算符的返回值是等号左边的引用，a=b的返回值是a的引用。返回值是String&则此次修改只是修改a的值，和b的值无关。
+
+
+## 可变长度的数组类实现
+
+[参看代码](https://github.com/DepInjoy/BaseHouse/blob/master/CPP/VariableLengthArray.cpp)实现了对=、[]运算符的重载、push_back在尾部追加数据等等一系列的操作。其中在对push_back实现时可以一次性分配较大的内存，用空间来换区时间，相关实现如下：
+
+```C++
+	if (!ptr){
+		ptr = new int[4];
+	}else{
+		if (size % 4 == 0){
+			int* tmp = new int[4 * (size / 4 + 1)];
+			memcpy(tmp, ptr, size * sizeof(int));
+			delete ptr;
+			ptr = tmp;
+		}
+	}
+```
 
 
 
