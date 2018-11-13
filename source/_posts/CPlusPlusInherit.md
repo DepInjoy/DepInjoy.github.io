@@ -14,22 +14,130 @@ description: 本文主要描述了C++中派生类和基类的访问权限、虚�
 
 ### 继承和动态绑定
 
+派生类对象的体积等于基类对象的体积加上派生类对象自己成员变量的体积。在派生类对象中，包含基类对象，而且基类对象的存储位置位于派生类新增成员变量之前。
+
+#### 派生类的构造和析构函数
+
+创建派生类对象时，先调用基类的构造函数来初始化派生类从基类继承的成员。同样派生类的析构函数执行时，先执行派生类的析构函数再执行基类的析构函数。
+
+派生类调用基类构造函数的方法有两种：
+
+- 显式调用，在派生类的构造函数中，为基类构造函数提供参数.
+
+  派生类::类名(参数列表):基类(参数列表)
+
+- 隐式调用，派生类的构造函数中，省略基类构造函数时，派生类构造函数自动调用基类的默认构造函数。
+
 #### 访问权限
-派生类继承基类中的成员，那么基类是如何控制其派生类的访问权限的呢？在实际的开发中我们可以在基类中定义一些protected属性的变量，在基类中进行共享。
+派生类具有基类全部的成员函数和成员变量，包含private、protected、public。那么基类是如何控制其派生类的访问权限的呢？在实际的开发中我们可以在基类中定义一些protected属性的变量，在基类中进行共享。
 
 |属性|派生类|基类|其他|
-|:---:|:---:|:---:|
+|:---:|:---:|:---:|-----|
 |public|√|√|√|
-|protected|√|√|×|
+|protected|√(当前类)|√|×|
 |private|×|√|×|
 
-#### 函数覆盖
+#### public继承的赋值兼容规则
+
+```
+class base{};
+class derived:public base{};
+base b;
+derived d;
+```
+
+- 派生类对象可以赋值给基类的对象。
+
+  b = d;
+
+- 派生类对象可以初始化基类引用
+
+  base &b1 = d;
+
+- 派生类对象的地址可以赋值给基类的指针
+
+  base * b2 = &d
+
+#### 多态
 
 基类中存在两种函数：
+
 - 一类是基类希望派生类进行覆盖的函数，我们需要将其定义为虚函数。虚函数是唯一可以进行覆盖的，虚函数的定义是在函数声明前添加**关键词virtual**。C++11的新属性中，我们可以添加**override关键词**来表明派生类中的虚函数，同时显式地注明使用哪个成员函数来重写基类的虚函数，如果派生类没有进行覆盖操作，那么编译器将会报错，相反地我们也可以将一个函数添加**final关键词**，之后如果存在尝试性的覆盖，将会引发错误。我们也可以在虚函数的尾部追加=0来**声明纯虚函数来提醒开发人员在派生类中进行相关的实现**，纯虚函数在基类中没有实现，在派生类中必须进行相关的实现，否则，编译器会报错。
 - 一类是基类希望派生类直接继承不要进行覆盖。我们将其声明为普通的函数，需要注意的是该函数需要时public或protected属性，派生类才可以正常的访问。
 
+```C++
+#include <iostream>
+#include <string>
+class Base
+{
+public:
+	Base();
+	Base(std::string name);
+	virtual void printInfo(void);
+private:
+};
+
+Base::Base()
+{
+	std::cout << "contruct Base ! " << std::endl;
+}
+Base::Base(std::string name)
+{
+	std::cout << "Construct Base with" << name << std::endl;
+}
+void Base::printInfo(void)
+{
+	std::cout << "Base::printInfo !" << std::endl;
+}
+
+class Derived: public Base
+{
+public:
+	Derived();
+	virtual void printInfo(void);
+private:
+};
+
+Derived::Derived()
+{
+	std::cout << "Construct Derived !" << std::endl;
+}
+void Derived::printInfo(void)
+{
+	std::cout << "Derived::printInfo !" << std::endl;
+}
+int main(int argc, char* argv[])
+{
+	Base b;
+	Derived d;
+	Base& b1 = d;
+	b1.printInfo();				//Derived::printInfo
+	b1 = b;
+	b1.printInfo();				//Derived::printInfo        ???
+
+	Base& b11 = b;
+	b11.printInfo();			//Base::printInfo !
+	b11 = d;
+	b11.printInfo();			//Base::printInfo !			???
+
+	Base* b2 = &d;				//Derived::printInfo
+	b2->printInfo();
+	b2 = &b;
+	b2->printInfo();			//Base::printInfo !
+
+	Base* b21 = &b;
+	b21->printInfo();			//Base::printInfo !
+	b21 = &d;
+	b21->printInfo();			//Derived::printInfo
+	system("pause");
+	return 0;
+}
+```
+
+
+
 #### 动态绑定
+
 - 运行时绑定：在函数运行时，由传入的实参来选择函数。当我们使用基类的引用（或指针）调用一个虚函数时会发生动态绑定。
 
 ```c++
