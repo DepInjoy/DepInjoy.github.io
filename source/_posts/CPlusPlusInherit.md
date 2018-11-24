@@ -7,7 +7,10 @@ tags: [CPP]
 description: 本文主要描述了C++中派生类和基类的访问权限、虚函数、纯虚函数以动态绑定的概念，并通过实例来展示对该部分的理解。
 ---
 
+
+
 面对对象编程的核心思想：
+
 - 数据抽象：实现类接口和实现分离。
 - 继承：满足定义类似的的类型对其相似性进行建模。
 - 动态绑定：我们可以定义类似但不完全相同的类，却可以在一定程度上忽略相似类型的区别，而用统一的方式使用对象。
@@ -59,6 +62,97 @@ derived d;
   base * b2 = &d
 
 #### 多态
+
+​	多态实现的关键是虚函数表，在每一个包含虚函数的类中都存在一个虚函数表，该类的任何对象中都放着虚函数的指针(4个字节)，多态增加了函数调用的空间和时间的消耗，却可以增强代码的可扩充性。
+
+​	多态函数的调用语句被编译成一系列根据基类指针所指向的（或基类引用所引用的）对象中存放的虚函数表的地址，在虚函数表中查找虚函数地址并调用虚函数指令。下面的这个示例可以用很好的展示对这部分的理解：
+
+```C++
+#include <iostream>
+class Base
+{
+public:
+	Base(){};
+	~Base(){ std::cout << "Destruct Base" << std::endl; }
+	virtual void func(){ std::cout << "Base::func" << std::endl; }
+private:
+	int i;							//sizeof(int) = 4
+};
+
+ class Derived : public Base
+ {
+ public:
+	 Derived(){};
+	 ~Derived(){ std::cout << "Destruct Derived" << std::endl; }
+	 virtual void func(){ std::cout << "Derived::func" << std::endl; }
+ };
+
+ int main(int argc, char*argv[])
+ {
+	 std::cout << sizeof(Base) << " " << sizeof(Derived) << std::endl;	//8 8
+	 Base b;
+	 Base *d = new Derived();			//Derived::func
+	 d->func();
+	 long long *p1 = (long long*)&b;
+	 long long *p2 = (long long*)d;
+	 *p2 = *p1;
+	 d->func();							//Base::func
+	 delete d;
+     return 0;
+ }
+```
+
+#### 虚析构函数
+
+​	我们删除基类指针释放对象时，调用的是基类的析构函数，同样地默认的定义的派生类的析构函数，当我们删除派生类时，调用的是派生类的析构函数，在实际的使用中，很多时候析构派生类时，需要调用基类的析构函数，此时我们需要在基类析构函数前添加virtual将其声明虚析构函数。派生类的虚析构函数定义可以省略virtual关键字。虚析构函数调用顺序，首先调用派生类的析构函数，然后调用基类的虚构函数。
+
+```C++
+#include <iostream>
+class Base
+{
+public:
+	~Base(){ std::cout << "Destruct Base" << std::endl; }
+};
+
+class Derived : public Base
+{
+public:
+	~Derived(){ std::cout << "Destruct Derived" << std::endl; }
+};
+int main(int argc, char*argv[])
+{
+	Base *d = new Derived();
+	delete d;							//Destruct Derived
+	return 0;
+}
+```
+
+```C++
+#include <iostream>
+class Base
+{
+public:
+	virtual ~Base(){ std::cout << "Destruct Base" << std::endl; }
+};
+
+class Derived : public Base
+{
+public:
+	~Derived(){ std::cout << "Destruct Derived" << std::endl; }
+private:
+};
+int main(int argc, char*argv[])
+{
+	/*
+	Destruct Derived
+	Destruct Base
+	*/
+	Base *d = new Derived();
+	delete d;
+	system("pause");
+	return 0;
+}
+```
 
 基类中存在两种函数：
 
