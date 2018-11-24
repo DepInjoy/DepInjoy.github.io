@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 文件格式基础
+title: 文件格式和解析
 date: 2018-11-14 20:00
 category: 数据分析
 tags: [数据分析]
@@ -52,13 +52,7 @@ def test():
 test()
 ```
 
-在第15行的中，
-
-```
-
-```
-
-
+在第15行的中，包含逗号分隔符会导致失败，使用Python自带的csv可以避免这样的问题。
 
 ```python
 import os
