@@ -67,7 +67,7 @@ int main()
 }
 ```
 
-## 文件读写
+##文本文件读写
 
 下面的这个示例将inTest.txt中的数字按照从小到大的顺序排列并重定向到outTest.txt文件。
 
@@ -132,7 +132,47 @@ cout << readData[0] << readData[1] << readData[2] << readData[3] << endl;	//9 82
 	srcFile.read(readData, 4);
 	cout << readData[0] << readData[1] << readData[2] << readData[3] << endl;	//89 3
 ```
+## 二进制文件读写和复制
+写入二进制文件
+```C++
+	int data = 8;
+	ofstream fout("Test.bin", ios::out | ios::binary);
+	fout.write((const char *)&data, sizeof(int));
+	fout.close()
+```
+读取二进制文件
+```C++
+	int rData;
+	ifstream fin("Test.bin", ios::in | ios::binary);//数字8
+	fin.read((char*)&rData, sizeof(int));
+	int rNum = fin.gcount();						//读入的字节数
+	fin.close();
+	cout << "read num: " << rNum << endl;			//4
+	cout << rData << endl;						    //8
+```
+实现二进制文件的复制
+```C++
+	ifstream in("copyIn.bin", ios::in | ios::binary);
+	if (!in) {
+		cout << "open binary file failed !" << endl;
+		in.close();
+		return -1;
+	}
 
+	ofstream out("copyout.dat", ios::out | ios::binary);
+	if (!out) {
+		cout << "open binary for input failed !" << endl;
+		out.close();
+		return -1;
+	}
+
+	char c;
+	while (in.get(c)){
+		out.put(c);
+	}
+	in.close();
+	out.close();
+```
 
 
 
