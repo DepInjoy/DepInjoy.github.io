@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 模板
-date: 2018-9-26 20:00
+date: 2018-03-26 20:00
 category: CPP
 tags: [CPP]
 description: 以实例的形式描述对C++模板的理解。

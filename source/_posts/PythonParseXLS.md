@@ -28,10 +28,20 @@ def parse_file(datafile):
         maxValue = max(colValues)
         # 获取最大值的索引
         maxValueIndex = colValues.index(maxValue)
-        # 将excel中的日期转化为年月日时分秒
+        # 将excel中的日期转化为年月日时分秒 2018/11/27  20:45:00  (2018, 11, 27, 20, 45, 0)
         year, month, day, hour, minute, second = xlrd.xldate_as_tuple(
             sheet.cell_value(maxValueIndex+1, 0), workbook.datemode)
         data[row0[i]] = [year, month, day, hour, maxValue]
     return data
+```
+
+获取某个单元格的数字
+
+```Python
+/*
+	row:	行数
+    col:	列数
+*/
+sheet.cell_value(row, col)
 ```
 
