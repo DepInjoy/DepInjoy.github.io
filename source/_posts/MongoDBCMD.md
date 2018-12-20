@@ -8,6 +8,14 @@ description: MongoDB是由C++编写的面向文档的NoSQL数据库。本文给�
 ---
 我一直认为学习一门语言最重要的基础，对基础的理解，有一些示例Demo来验证学到的知识和想法是一个很好的学习方式，最近在跟着阿里大学学习MongoDB，在此整理一下学到的一些基础，希望在这个过程中可以学到更多新鲜的知识。
 
+## 简介
+
+Mongodb 是一款流行的NOSQL数据库，使用的数据类型 BSON（类似 JSON）。
+
+- 模式灵活，更以处理扁平格式的数据(例如：CSV和分层数据等)
+- 部署灵活
+- 适用于大数据
+
 #### MongoDB服务器
 MongoDB的运行需要启动一个服务器(mongo)和一个客户端(mongod)。
 
@@ -23,9 +31,11 @@ mongo.exe 					启动服务器
 mongod.exe --dbpath "C:\\MongoDB\data\db" --logpath "C:\\MongoDB\data\log\mongo.log"
 mongo.exe --port 27017
 ```
+### 数据库状态查询、新建、删除
+
 #### 数据库状态查询
 
-```
+```mongodb
 show dbs										查询数据库
 show tables/show collections					查看数据库中的表
 db.stats()										查看数据库所有的状态信息
@@ -34,6 +44,20 @@ db.serverStatus()								查询服务器状态
 db.serverStatus().storageEngine					查看存储引擎
 show profile
 ```
+
+#### 新建数据库
+
+```
+use hello		进入hello数据库，如果不存在则创建
+```
+
+#### 删除数据库
+
+```
+db.dropDatabase()
+```
+
+### 数据插入、查询、过滤、删除、修改、投影、去重、聚合分析
 
 #### 数据插入、查询、过滤基础
 
@@ -58,6 +82,33 @@ db.users.find({age:24}).count()					查询age=24的数量
 db.users.find().sort({age:1})					按照age升序排列
 db.users.find().sort({age:-1})					按照age降序排列
 db.users.find().sort({age:-1}).pretty()			优化结果集显示
+```
+
+#### 删除数据
+
+```
+db.users.remove({"age":23})    					删除age=23的数据
+db.users.remove({})								删除users集合中所有的数据					
+```
+
+#### 更改数据
+
+```
+db.collection.update(criteria,objNew,upsert,multi)
+
+参数说明：
+:param criteria:	查询条件
+:param objNew:		update对象和一些更新操作符
+:param upsert:		若不存在update记录，是否插入objNew文档，true为插入，false为不插入，默认为false。
+:param multi:		默认是false，只更新找到的第一条记录；如果为true，把按条件查询出来的记录全部更新。
+```
+
+使用示例：
+
+```
+db.users.update({"age":32},{$set:{"name":"Lucy"}}) 	将从users集合中age=32的第一条记录name更改为Lucy
+db.users.update({"age":32},{$set:{"name":"Lucy"}}， false, true)	将从users集合中age=32的所有记录name更改为Lucy
+db.users.update({"age":31},{$set:{"name":"Lucy"}}， true)	    将从users集合中age=31的所有记录name更改为Lucy，如果不存在age=31的在插入{"age":31， "name":"Lucy"}
 ```
 
 #### 文档嵌套和嵌套文档查询
