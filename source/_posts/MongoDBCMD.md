@@ -10,7 +10,7 @@ description: MongoDB是由C++编写的面向文档的NoSQL数据库。本文给�
 
 ## 简介
 
-Mongodb 是一款流行的NOSQL数据库，使用的数据类型 BSON（类似 JSON）。
+Mongodb 是一款流行的NOSQL数据库，使用的数据类型 BSON（类似 JSON，JSON的二进制形式）。
 
 - 模式灵活，更以处理扁平格式的数据(例如：CSV和分层数据等)
 - 部署灵活
@@ -189,3 +189,47 @@ db.users.group(
 	}
 )
 ```
+
+### 数据导入
+
+#### mongoimport
+
+mongoimport可以将指定格式文件(json或csv)导入指定集合中。 
+
+```
+mongoimport --help			查看帮助文件
+
+mongoimport
+	-d						使用的数据库
+    -c						使用的集合
+    --file					文件名称
+```
+
+示例：
+
+```
+//将example.json导入example数据库的hello集合中
+mongoimport -d example -c hello --file example.json
+```
+
+### 正则运算
+
+MongoDB支持perl兼容的正则表达式。
+
+```
+db.users.find({"name" : {"$regex": "[Ll]ily"}})			查找name中包含Lily或lily的信息
+db.users.find({"name" : {"$regex": "[Ll]ily | Lucy"}})	查找name中包含Lily或lily或Lucy的信息
+```
+
+### in运算符
+
+```
+db.users.find({"age" : {"$in" : [16, 17, 24]}})			查找age等于16、17或24的用户信息
+```
+
+### all运算符
+
+```
+db.users.find({"model" : {"$all" : [16, 17, 24]}})		查找model包含16、17、24的用户信息
+```
+

@@ -7,7 +7,9 @@ tags: [MongoDB、 Python、NoSQL、数据库]
 description: 通过Python访问MongoDB数据库中的数据，展示了数据库、集合的创建、删除以及数据的增删改查等等操作的实现。
 ---
 
-​	Python提供的pymongo模块访问MongoDB数据库，下面给出一些小的示例来介绍如何实现操作的。
+​	Python提供的pymongo模块访问MongoDB数据库。[Python访问MongoDB](http://api.mongodb.com/python/)
+
+下面给出一些小的示例来介绍如何实现操作的。
 
 ## 创建数据库和集合
 
@@ -41,7 +43,7 @@ def get_db(dbName):
 collection = db.get_collection(name)
 ```
 
-## 数据增删改查
+## 数据增删改查投影
 
 #### 增加数据
 
@@ -85,6 +87,8 @@ for item in data:
 
 ### 修改数据
 
+#### update_one和update_many
+
 ```Python
 def updateData(db, colName, cod, value, single = False):
     '''
@@ -103,6 +107,31 @@ def updateData(db, colName, cod, value, single = False):
 # 示例
 updateData(db, "cities", {"age": 24}, {'$set':{"name":"Lily"}}, True)
 updateData(db, "cities", {"age": 24}, {'$set': {"name": "Jack"}})
+```
+
+#### save
+
+```Python
+def saveData(db, colName, cod, key, value, single = False):
+    cursor = db.get_collection(colName)
+    if single:
+        doc = cursor.find_one(cod)
+        if doc is not None:
+            doc[key] = value
+            cursor.save(doc)
+# 调用示例
+saveData(db, "cities",{"nation": 'USA'}, "name", "Lucy", True)
+```
+
+#### update
+
+```Python
+# 复位
+col = db.get_collection("cities")
+doc = col.update({"name": "Lucy"}, {'$unset': {"age": ""}})
+
+#多个文档更新
+doc = col.update({"nation": 'USA'}, {'$set': {"name": ""}}, multi=True)
 ```
 
 ### 删除数据
@@ -131,6 +160,22 @@ def rmMany(db, colName, cod):
 rmData(db, "cities", {"nation": "USA"})
 rmMany(db, "cities", {"nation": "USA"})
 rmMany(db, "cities", {})
+```
 
+#### 文档删除
+
+```Python
+col = db.get_collection("cities")
+col.remove({"name":"Tornaduo"})				#删除name=Tornaduo的文档
+col.remove({"age" : {"$exists" : 1}})		#删除存在age字段文档
+col.remove({"nation": {"$exists": 0}})		#删除不存在nation字段的文档
+```
+
+
+
+### 投影
+
+```Python
+cursor = db.get_collection(name).find({}, {'nation' : 1}
 ```
 
