@@ -15,13 +15,15 @@ description: 本文主要描述C++中内存的申请、释放的方法。
 
 在实际的使用中，我们可以通过两种方式来申请内存：
 
-- 调用malloc从系统申请制定大小的内存，如果成功则返回指向该由连续字节构成的内存块的指针。在不需要再使用时调用free函数将该内存空间释放。同时我们可以通过realloc来调整（增大或减少）内存空间的大小。
+- 调用malloc从系统申请制定大小的内存，如果成功则返回指向该由连续字节构成的内存块的指针，如果失败则返回NULL。在不需要再使用时调用free函数将该内存空间释放。同时我们可以通过realloc来调整（增大或减少）内存空间的大小。
 
   ```C++
   #include <iostream>
   #include <stdlib.h>
   using namespace std;
-  
+  /*
+  	malloc和remalloc函数实现申请内存、调整（增大、减少）内存示例
+  */
   int main(int argc, char* argv[])
   {
   	char* tmp = (char*)malloc(8 * sizeof(char));	//申请8个字节内存空间
@@ -43,12 +45,20 @@ description: 本文主要描述C++中内存的申请、释放的方法。
   ```C++
   #include <iostream>
   using namespace std;
-  
+  /*
+  	new运算符实现申请内存，remalloc函数实现调整（增大、减少）内存示例
+  */
   int main(int argc, char* argv[])
   {
   	char* tmp = new char[8];
   	cout << _msize(tmp) << endl;					//8
-  	delete []tmp;
+  	
+      tmp = (char*)realloc(tmp, 16 * sizeof(char));
+  	cout << _msize(tmp) << endl;					//16
+  
+  	tmp = (char*)realloc(tmp, 6 * sizeof(char));
+  	cout << _msize(tmp) << endl;					//6
+      delete []tmp;
   	return 0;
   } 
   ```
@@ -57,6 +67,7 @@ description: 本文主要描述C++中内存的申请、释放的方法。
 
 - new和delete无需另外包含头文件；malloc需要添加```#include <stdlib.h>```头文件。
 - new运算符返回正确类型，在对指针进行赋值时，无需进行类型转化。malloc的返回值是void*，在调用malloc时需要进行显示的类型强制转换成为所需要的指针类型。 
-- malloc/free是C++/C标准库函数，new/delete是C++运算符。使用new运算符时自动调用该对象的构造函数，使用delete则自动调用析构函数。而malloc/free是库函数不是运算符，不再编译器控制权限内，无法自动调用构造/析构函数
-- 
-- 如果希望改变分配内存的大小，只能通过C标准函数malloc、realloc和free来管理大小变化的堆内存块。不可以将new、delete与调整内存管理的函数混合使用，否则会在运行时导致内存管理的崩溃。
+- malloc/free是C++/C标准库函数，new/delete是C++运算符。malloc需要传入表示申请内存大小的参数，而new运算符则会自动计算所需内存空间的大小。
+- 使用new运算符时自动调用该对象的构造函数，使用delete则自动调用析构函数。而malloc/free是库函数不是运算符，不在编译器控制权限内，无法自动调用构造/析构函数
+- new申请内存失败则会抛出异常，malloc申请内存失败会返回NULL。
+- 如果希望改变分配内存的大小，只能通过C/C++标准函数malloc、realloc和free来管理大小变化的堆内存块。
