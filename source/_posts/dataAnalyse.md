@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 文件格式和解析
+title: 数据分析
 date: 2018-11-14 20:00
 category: 数据分析
 tags: [数据分析]
@@ -9,70 +9,38 @@ description: 介绍了常见的CSV、Excel、Json文件格式以及通过Python�
 
 
 
-### 数据格式
 
-##### CSV格式
 
-一篇很详细介绍[CSV文件格式的博客](https://blog.csdn.net/woaixiaoyu520/article/details/78455650)，csv文件的字段通过逗号进行分割，其无需指定的软件打开。
+## 数据提取
 
-- 每一行记录位于单独一行上，用回车换行符CRLF(也就是\r\n)分割
-- 每个字段用逗号分割(TSV以制表符分割，TSV是CSV的一种变体)
-- 字段中若包含回车换行符、双引号或者逗号，该字段需要用双引号括起来。
-- 如果用双引号括字段，那么出现在字段内的双引号前必须加一个双引号进行转义。
+## 数据清洗
 
-首先我们利用python通过逗号分隔符的形式读取[测试数据](https://github.com/DepInjoy/BaseHouse/blob/master/Python/data/beatles-diskography.csv)
+### 审核数据质量
 
-```python
-import pprint
-import os
+- **有效性**
+  - 数据类型检查，通常使用正则表达式进行测试
+  - 边界检查，如是否超过参数的最大或者最小值等等。
+  - 审查交叉字段约束条件
+- **准确性**
+  - ETL软件等
+- **完整性**
+- **一致性**
+- **统一性**
+  - 使用相同的单位
+  - 
 
-DATADIR = ""
-DATAFILE = "beatles-diskography.csv"
-def parse_file(datafile):
-    data = []
-    with open(datafile, "r") as f:
-        header = f.readline().split(",")  # 获取表头
-        counter = 0
-        for line in f:
-            if counter == 10:
-                break
-            fields = line.split(",")
-            entry = {}
-            for i, value in enumerate(fields):
-                entry[header[i].strip()] = value.strip();  # 用strip方法去除空白
-                data.append(entry)
-            counter += 1
-    return data
+### 质量评估手段
 
-def test():
-    dataFile = os.path.join(DATADIR, DATAFILE)
-    res = parse_file(dataFile)
-    pprint.pprint(res)
+### 数据清洗
 
-test()
-```
+改正错误的数据，处理脏数据（由于人为输入错误以及没有相关的规范以及制定的规范没有被遵守等等原因导致。）那么如何进行数据清洗呢？
 
-在第15行的中，包含逗号分隔符会导致失败，使用Python自带的csv可以避免这样的问题。
+- 数据审核
+- 创建清理计划(确定脏数据产生的原因；纠正数据；进行测试)
+- 执行清理计划(有可能需要雇佣人员去手动校正人眼才可以发现的错误。)
+- 上述步骤迭代
 
-```python
-import os
-import pprint
-import csv
+### 制定规范
 
-DATADIR = ""
-DATAFILE = "beatles-diskography.csv"
-def parse_csv(datafile):
-    data = []
-    n = 0
-    with open(datafile, "r") as sd:
-        r = csv.DictReader(sd)  # 为每行创建一个字典，同时将字段名称与表头对应
-        for line in r:
-            data.append(line)
-    return data
 
-if __name__ == '__main__':
-    datafile = os.path.join(DATADIR, DATAFILE)
-    d = parse_csv(datafile)
-    pprint.pprint(d)
-```
 
