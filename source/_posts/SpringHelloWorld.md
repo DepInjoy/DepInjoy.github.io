@@ -7,7 +7,22 @@ tags: [Spring Boot]
 description: 
 ---
 
+### 构造第一个Spring工程
+
+​	目前大多数大多数使用的Idea、Eclipse集成开发工具，我选择使用Idea，在本文基于此进行一些介绍。和其他的编程语言类似，以打印Hello World为例构造第一个Spring工程。
+
+1. 通过Web下载[项目安装](http://start.spring.io)，填写Group、Artifact以及dependencies，之后点击生成工程。
+
+2. 将下载的项目工程包解压
+
+3. 打开IDea，选择文件->Import Project，在对话框中找到工程目录打开。
+
+   ​	如果找不到Import Project选项可以[参考博客]()手动添加。
+
+4. 工程打开后，右键，选择运行该项目即可。
+
 # 初始化Spring Boot项目以及项目结构
+
 [博客](http://tengj.top/2017/02/26/springboot1/)很详细描述了如何从零构建一个项目。
 
 # 问题附录
