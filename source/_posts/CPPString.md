@@ -59,6 +59,66 @@ int main(int argc, char* argv[])
 }
 ```
 
+## 流读取运算
+
+```C++
+string tmp;
+cin >> tmp;			//输入Hello World并回车，则输入被赋值给tmp
+
+string tmp0;
+getline(cin, tmp0);
+```
+
+## 赋值
+
+- 通过=和assign进行赋值，两者的不同在于assign可以实现部分赋值。
+
+```C++
+	string tmp0("copy"), tmp1, tmp2, tmp3, tmp4;
+	tmp1 = tmp0;						//copy
+	tmp2.assign(tmp0);					//copy
+	
+	//从下标索引为1开始赋值2个字符，如果复制长度超过字符串长度则只复制到字符串尾部。
+	tmp3.assign(tmp0, 1, 2);			//op
+	tmp4.assign(tmp0, 1, 4);			//op
+```
+
+- 访问单个字符
+
+  可以通过[]和at()进行访问，两者的不同在于at()会进行范围检查，如果超过范围会给出异常，而[]不进行范围检查，如果超出范围会导致程序crash。但是[]的执行效率会比at()要高一些。
+
+  ```C++
+  	string tmp("copy");
+  	char c = tmp[0];					//c
+  	char c1 = tmp.at(0);				//c
+  	
+  	//at超出范围异常捕获
+  	char c2;			
+  	try {
+  		c2 = tmp.at(4);
+  	}catch (const exception& err) {
+  		cout << err.what() << endl;		//invalid string position
+  	}
+  	//char c3 = tmp[4];					//导致程序crash
+  ```
+
+## 连接
+
++和append都可以实现两个字符串之间的连接，不同在于append可以实现取部分字符实现连接。
+
+```C++
+	string tmp0("Hello"), tmp1(" World");
+	string tmp = tmp0 + tmp1;						//Hello World
+
+	string tmp2 = tmp0;
+	tmp2.append(tmp1);								//Hello World
+
+	//从下标1开始，取2或10个字符，如果字符串内没有足够字符则复制到最后一个字符
+	string tmp3, tmp4;
+	tmp3.append(tmp0, 1, 2);						//el
+	tmp4.append(tmp0, 1, 10);						//ello
+```
+
 ## 获取长度
 
 ```C++
@@ -165,6 +225,22 @@ iterator erase( iterator pos );
 ```C++
 string tmp("Hello Hello !");
 tmp.erase(2);	
+```
+
+## 比较
+
+可以使用运算符==、 >、 <、 <=、 >=、 !=以及compare实现。同样compare可以实现部分内容对比。
+
+```
+
+```
+
+## 子串
+
+```C++
+string tmp("Hello World!");
+//从索引为6的取5个字符
+string str = tmp.substr(6, 5)			//World
 ```
 
 
