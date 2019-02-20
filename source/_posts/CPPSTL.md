@@ -39,7 +39,7 @@ description:
 
 2. 关联容器
 
-   1. 插入任何元素，都按相应的排序规则来确定其位置
+   1. 插入任何元素，都按相应的排序规则(从小到大)来确定其位置
    2. 查找时具有很好的性能
    3. 通常以平衡二叉树方式实现， 插入和检索的时间都是 O(log(N))。
 
@@ -67,8 +67,185 @@ description:
 
 #### 迭代器
 
-​	迭代器用于依次取容器中元素，它类似于指针。
+​	迭代器用于指向顺序容器和关联容器中的元素，用法类似于指针，包含const和非const两种，其中非cons支持修改其指向的元素。
+
+##### 迭代器定义
+
+​	我们可以在迭代器上使用++操作来访问容器中的下一个元素，当迭代器已经指向容器中的最后一个元素时，不可以再执行++操作，否则会出现和访问空指针一样的情况。
+
+```C++
+容器名::iterator 迭代器变量名；					//非const迭代器
+容器名::const_iterator 迭代器变量名;				//const迭代器
+*迭代器变量名									  //访问迭代器指向的元素
+```
+
+以vector为例进行操作展示：
+
+```C++
+#include <iostream>
+#include <vector>
+using namespace std;
+int main(int argc, char* argv[])
+{
+	vector<int> v0;
+	v0.push_back(6);			//尾部追加元素
+	v0.push_back(8);
+    
+    //定义非const迭代器，*a = 16的修改是允许的
+	vector<int>::iterator a = v0.begin();
+    //定义const迭代器，*b = 18的修改是不被允许的，但是b = a的操作是允许的
+	vector<int>::const_iterator b = v0.begin();
+	cout << *a << endl;			//6
+	a++;						//指向容器中下一个元素
+	cout << *a << endl;			//8
+	cout << *b << endl;			//6
+    
+    /*		反向迭代器		*/
+    vector<int>::reverse_iterator r = v0.rbegin();
+	cout << *r << endl;			//8
+	return 0;
+}
+```
+
+
 
 #### 算法
 
-​	算法是同来操作容器中元素的函数模板。算法与它操作的数据类型无关，可广泛用于任何数据结构中。
+​	算法是操作容器中元素或普通数组的的函数模板。算法与它操作的数据类型无关，可广泛用于任何数据结构中，大多数算法在```<algorithm>```中定义。STL中提供了各种容器[常用的算法](https://en.cppreference.com/w/cpp/algorithm)。
+
+以find算法为例进行展示：
+
+```C++
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main(int argc, char* argv[])
+{
+    /*
+    	find函数定义：
+    	template< class InputIt, class T >
+		InputIt find( InputIt first, InputIt last, const T& value );
+		
+		find在[first, last)范围内进行查找,用==判断是否符合。
+		@first		  查找起点
+		@last		  查找终点
+		@返回值		查找成功则返回相应的迭代器，如果失败则返回last迭代器。
+    */
+	vector<int> v;
+	v.push_back(6);v.push_back(8);v.push_back(10);
+	vector<int>::iterator d = find(v.begin(), v.end(), 6);
+	cout << *d << endl;					//6
+	vector<int>::iterator e = find(v.begin(), v.end(), 12);
+	if (e == v.end()){					//Yes
+		cout << "Not found !" << endl;
+	}
+	return 0;
+}
+```
+
+##### STL中大、小和相等概念
+
+- “大”、”小“
+
+  在STL中，默认这样的描述等价：**x比y小**等价于**x<y为真**等价于**y比x大**
+
+- 相等，有下面两种情况：
+
+  - **x和y相等**等价于**x==y**,如顺序查找的find。
+
+  - **x和y相等**等价于**x小于y和y小于x同时为假**，如binary_search。
+
+    下面给出一个例子展示两种情况下相等的应用示例：
+
+    ```C++
+    #include <iostream>
+    #include <vector>
+    #include <map>
+    #include <algorithm>
+    using namespace std;
+    class A
+    {
+    public:
+    	int val;
+    	A(int t);
+        //必须为常量成员函数，否则编译会出错
+    	bool operator ==(const A& v) const;
+        //必须为常量成员函数，否则编译会出错
+    	bool operator < (const A& v) const;
+    };
+    
+    A::A(int t){
+    	val = t;
+    }
+    
+    bool A::operator==(const A& v)const
+    {
+    	cout << "overloaded == " << endl;
+    	return val == v.val;
+    }
+    
+    bool A::operator<(const A& v) const
+    {
+    	cout << "overloaded < " << endl;
+    	return false;
+    }
+    
+    int main(int argc, char* argv[])
+    {
+    	vector<A> v;
+    	v.push_back(A(6)); v.push_back(A(8)); v.push_back(A(10));
+    	/*
+    		overloaded == 
+    		--- 6
+    	*/
+        vector<A>::iterator d = find(v.begin(), v.end(), A(6));
+    	cout << "--- " << d->val << endl;
+    	/*
+    		overloaded ==
+    		overloaded ==
+    		overloaded ==
+    		Data not found !
+    	*/
+        d = find(v.begin(), v.end(), A(16));
+    	if (d != v.end()) cout << "--- " << d->val << endl;
+    	else cout << "Data not found !" << endl<< endl;
+    
+        /*
+        	overloaded < 
+        	overloaded < 
+        	overloaded < 
+        	binary_search result :1
+        */
+    	bool res = binary_search(v.begin(), v.end(), A(16));
+    	cout << "binary_search result :" << res << endl;
+    	return 0;
+    }
+    ```
+
+#### 容器对比
+
+|      容器      | 迭代器类别 | 操作时间复杂度 | 支持算法 |      |
+| :------------: | :--------: | :------------: | :------: | :--: |
+|     vector     |  随机访问  |                |          |      |
+|    dequeue     |  随机访问  |                |          |      |
+|      list      |    双向    |                |          |      |
+|      set       |    双向    |                |          |      |
+|    multiset    |    双向    |                |          |      |
+|      map       |    双向    |                |          |      |
+|    multimap    |    双向    |                |          |      |
+|     stack      |   不支持   |                |          |      |
+|     queue      |   不支持   |                |          |      |
+| priority_queue |   不支持   |                |          |      |
+
+其中：
+
+双向迭代器支持以下运算：
+
+p+=i;p-=i;p[i];p+i;p-i;p<p1;p<=p1;p>p1;p>=p1;p-p1(计算p到p1之间元素的个数)；
+
+随机访问迭代器除了支持双向迭代器的运算之外，还支持支持以下运算：
+
+++p;p++;--p;p--;*p;p!=p1;p==p1;
+
