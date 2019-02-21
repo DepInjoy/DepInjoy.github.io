@@ -249,3 +249,120 @@ p+=i;p-=i;p[i];p+i;p-i;p<p1;p<=p1;p>p1;p>=p1;p-p1(计算p到p1之间元素的个
 
 ++p;p++;--p;p--;*p;p!=p1;p==p1;
 
+
+
+## 函数对象
+
+函数对象是在类的定义中重载()运算符，在对象使用时可以达到和函数调用相同的效果。
+
+应用示例如下：
+
+```C++
+#include <iostream>
+using namespace std;
+class A
+{
+public:
+	int operator()(int a, int b);
+private:
+	int _pow;
+};
+int A::operator()(int a, int b)
+{
+	return a * b;
+}
+int main(int argc, char* argv[]){
+	A tmp;
+	int res = tmp(2, 3);
+	cout << res << endl;
+	return 0;
+}
+```
+
+### 函数对象的应用
+
+1. STL中模板调用，如accumulate等等。
+
+   ```C++
+   #include <iostream>
+   #include <vector>
+   #include <numeric>
+   using namespace std;
+   class A
+   {
+   public:
+   	A(int init){ _init = init; }
+   	int operator()(int total, int b);
+   private:
+   	int _init;
+   };
+   int A::operator()(int total, int b)
+   {
+   	static bool inited = false;
+   	if (!inited){
+   		total += _init;
+   		inited = true;
+   	}
+   	return total + b;
+   }
+   
+   int multi(int total, int b){
+   	return total + b;
+   }
+   
+   int main(int argc, char* argv[]){
+   	vector<int> v;
+   	v.push_back(1); v.push_back(2); v.push_back(3); v.push_back(4);
+   	A tmp(0);
+   	int res = accumulate(v.begin(), v.end(), 10, tmp);					//20
+   	cout << res << endl;
+   	res = accumulate(v.begin(), v.end(), 10, multi);					//20
+   	cout << res << endl;
+   	return 0;
+   }
+   ```
+
+2. greater/less函数对象类模板可以用来规定升序排序的方法。关联容器和STL很多算法都可以自定义比较器。在自定义比较器中，下面的描述等价：**x小于y**等价于**op(x,y)为真**等价于**y大于x**。
+
+```C++
+#include <iostream>
+#include <algorithm>
+#include <functional>
+#include <list>
+using namespace std;
+class A
+{
+public:
+	bool operator()(int total, int b);
+};
+bool A::operator()(int a, int b)
+{
+	//按照十位数大小进行排序
+	return (a / 10) > (b/10);
+}
+int main(int argc, char* argv[])
+{
+	list<int> l;
+	l.push_back(21); l.push_back(2); l.push_back(35); l.push_back(16);
+	list<int>::iterator tmp;
+#if 1
+	A a;
+	l.sort(a);
+	for (tmp = l.begin(); tmp != l.end(); tmp++){
+		cout << *tmp << " ";
+	}
+	cout << endl;					//35 21 16 2
+#else
+	l.sort(less<int>());			//从小到大排序
+	for (tmp = l.begin(); tmp != l.end(); tmp++){
+		cout << *tmp << " ";
+	}
+	cout << endl;					//35 21 16 2
+#endif
+	system("pause");
+	return 0;
+}
+```
+
+#### 
+
