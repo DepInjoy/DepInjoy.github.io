@@ -56,3 +56,16 @@ def flib(n)
 ![](E:\00_Project\code\00_blog\source\source\_img\斐波那契额数组递归实现时间复杂度.jpg)
 
 可见，斐波那契额数列的递归实现的时间复杂度为o(2^n)，虽然算法实现简单，但是其时间复杂度很高。这样也可以看出数据结构和算法对于算法的实现很重要。
+
+
+
+## 常见数据结构操作复杂度
+
+![](E:\00_Project\code\00_blog\source\source\_img\常见数据结构操作复杂度.jpg)
+
+​                                                                            [图片来源](http://bigocheatsheet.com/)
+
+## 常见排序算法复杂度
+
+![](E:\00_Project\code\00_blog\source\source\_img\常见排序算法复杂度.jpg)
+
