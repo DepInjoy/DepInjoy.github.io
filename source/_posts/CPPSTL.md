@@ -7,71 +7,72 @@ tags: [CPP]
 description: 
 ---
 
-​	标准模板库STL是用模板编程思想，将常用的数据库(如链表、数组和二叉树等)和算法(如排序、查找等)写成模板，实现无论数据结构中存放的数据对象是什么，都不必重新实现数据结构和算法。STL就是一些常用的数据结构和算法模板的集合，从而实现不必重新实现多达数标准的数据结构和算法，不能够得到很高的性能。
+​	
 
-### 基本概念
+​	标准模板库STL是用模板编程思想，将常用的数据库(如链表、数组和二叉树等)和算法(如排序、查找等)写成模板，实现无论数据结构中存放的数据对象是什么，都不必重新实现数据结构和算法。STL就是一些常用的数据结构和算法模板的集合，从而实现不必重新实现大多数标准的数据结构和算法，还能够得到很高性能。
 
-#### 容器
+## 基本概念
+
+### 容器
 
 ​	容器是用于容纳各种数据类型(基本类型变量、对象)通用的数据结构，是类模板。对象插入容器中时，被插入的对象是复制品，有些算法需要对元素进行排序、查找和比较，而有的容器本身就已经进行排序，导致很多容器所属的类常常需要重载==和<元素符。容器可分为三类：
 
-1. 顺序容器
+#### 顺序容器
 
-   - vector
+##### vector
 
-     头文件```<vector>```，vector可以看做动态扩容的数组，vector和数组的区别在于数组在声明时需要指定数组长度，而vector会根据运行情况动态分配内存，并且一般会多申请一些内存。vector操作时间复杂度：
+​	vector可以看做动态扩容的数组，vector和数组的区别在于数组在声明时需要指定数组长度，而vector会根据运行情况动态分配内存，并且一般会多申请一些内存。**vector在尾部增加或删除元素具有更好的性能**。
 
-     以索引的方式访问任意元素的时间复杂度为O(1)，在尾部增加或者删除元素的时间复杂度也是O(1)，而在元素中间插入或删除的时间复杂度为O(n)。由此可见**vector在尾部增加或删除元素具有更好的性能**。
+##### deque
 
-   - deque
+​	deque是双向队列。**deque在两端增加或删除元素都具有较好的性能。**
 
-     头文件 ```<deque>```，deque是双向队列。**deque在两端增加或删除元素具有较好的性能。**
+- 支持随机访问，即支持[]以及at()，但是性能次于vector；
+- 支持在元素内进行插入和删除操作，但性能不及list。
 
-     - 支持随机访问，即支持[]以及at()，但是性能次于vector；
-     - 支持在元素内进行插入和删除操作，但性能不及list。
+##### list
 
-   - list
+​	list是双向链表，不支持随机存取，且元素在内存不连续放任何位置增删有较好的性能。 
 
-     头文件``` <list> ```，list是双向链表。
+#### 关联容器
 
-     - 不支持随机存取。
-     - 元素在内存不连续放任何位置增删有较好的性能。 
+1. 插入任何元素，都按相应的排序规则(从小到大)来确定其位置
+2. 查找时具有很好的性能，通常以平衡二叉树方式实现， 插入和检索的时间都是 O(log(N))。
 
-2. 关联容器
+##### set/multiset
 
-   1. 插入任何元素，都按相应的排序规则(从小到大)来确定其位置
-   2. 查找时具有很好的性能
-   3. 通常以平衡二叉树方式实现， 插入和检索的时间都是 O(log(N))。
+集合，set和multiset的区别在于set不允许元素重复，而multiset则允许有元素重复。
 
-   - set/multiset
+```C++
+//Compare:		决定其中元素中的大小是如何定义的，其缺省类型是less<key>
+template < 
+		   class T, 							//multiset::key_type/value_type
+           class Compare = less<T>,        		// multiset::key_compare/value_compare
+           class Alloc = allocator<T> >    		// multiset::allocator_type
+		> class multiset;
+```
 
-     集合，set和multiset的区别在于set不允许元素重复，而multiset则允许有元素重复。
+##### map/multimap
 
-   - map/multimap
+map和set的区别在于map存放的元素有且只有两个成员变量，map根据第一个成员变量大小进行从小到大的排序并可以根据第一个成员变量进行进行元素检索。而map和multimap的区别在于是否允许有相同的第一个成员变量。
 
-     map和set的区别在于map存放的元素有且只有两个成员变量，map根据第一个成员变量大小进行从小到大的排序并可以根据第一个成员变量进行进行元素检索。而map和multimap的区别在于是否允许有相同的第一个成员变量。
+#### 容器适配器
 
-3. 容器适配器
+##### stack
 
-   - stack
+先进后出，删除、查找和修改项只能是最近插入的项(栈顶元素)。
 
-     头文件``` <stack>```，先进后出，删除、查找和修改项只能是最近插入的项(栈顶元素)
+##### queue
 
-   - queue
+先进先出，删除、查找和修改项只能在头部进行。
 
-     头文件```<queue>```，先进先出，删除、查找和修改项只能在头部进行。
+##### priority_queue
 
-   - priority_queue
+优先级队列，最高优先级的元素总是第一个出列。
 
-     优先级队列，最高优先级的元素总是第一个出列。
+### 迭代器
 
-#### 迭代器
-
-​	迭代器用于指向顺序容器和关联容器中的元素，用法类似于指针，包含const和非const两种，其中非cons支持修改其指向的元素。
-
-##### 迭代器定义
-
-​	我们可以在迭代器上使用++操作来访问容器中的下一个元素，当迭代器已经指向容器中的最后一个元素时，不可以再执行++操作，否则会出现和访问空指针一样的情况。
+​	迭代器用于指向顺序容器和关联容器中的元素，用法类似于指针，包含const和非const两种，其中非cons支持修改其指向的元素。我们可以在迭代器上使用++操作来访问容器中的下一个元素，当迭代器已经指向容器中的最后一个元素时，不可以再执行++操作，否则会出现和访问空指针一样的情况。
 
 ```C++
 容器名::iterator 迭代器变量名；					//非const迭代器
@@ -107,9 +108,7 @@ int main(int argc, char* argv[])
 }
 ```
 
-
-
-#### 算法
+### 算法
 
 ​	算法是操作容器中元素或普通数组的的函数模板。算法与它操作的数据类型无关，可广泛用于任何数据结构中，大多数算法在```<algorithm>```中定义。STL中提供了各种容器[常用的算法](https://en.cppreference.com/w/cpp/algorithm)。
 
@@ -145,99 +144,18 @@ int main(int argc, char* argv[])
 }
 ```
 
-##### STL中大、小和相等概念
+从支持的迭代器类、操作时间复杂度以及支持算法几个维度对常用的容器进行对比。
 
-- “大”、”小“
-
-  在STL中，默认这样的描述等价：**x比y小**等价于**x<y为真**等价于**y比x大**
-
-- 相等，有下面两种情况：
-
-  - **x和y相等**等价于**x==y**,如顺序查找的find。
-
-  - **x和y相等**等价于**x小于y和y小于x同时为假**，如binary_search。
-
-    下面给出一个例子展示两种情况下相等的应用示例：
-
-    ```C++
-    #include <iostream>
-    #include <vector>
-    #include <map>
-    #include <algorithm>
-    using namespace std;
-    class A
-    {
-    public:
-    	int val;
-    	A(int t);
-        //必须为常量成员函数，否则编译会出错
-    	bool operator ==(const A& v) const;
-        //必须为常量成员函数，否则编译会出错
-    	bool operator < (const A& v) const;
-    };
-    
-    A::A(int t){
-    	val = t;
-    }
-    
-    bool A::operator==(const A& v)const
-    {
-    	cout << "overloaded == " << endl;
-    	return val == v.val;
-    }
-    
-    bool A::operator<(const A& v) const
-    {
-    	cout << "overloaded < " << endl;
-    	return false;
-    }
-    
-    int main(int argc, char* argv[])
-    {
-    	vector<A> v;
-    	v.push_back(A(6)); v.push_back(A(8)); v.push_back(A(10));
-    	/*
-    		overloaded == 
-    		--- 6
-    	*/
-        vector<A>::iterator d = find(v.begin(), v.end(), A(6));
-    	cout << "--- " << d->val << endl;
-    	/*
-    		overloaded ==
-    		overloaded ==
-    		overloaded ==
-    		Data not found !
-    	*/
-        d = find(v.begin(), v.end(), A(16));
-    	if (d != v.end()) cout << "--- " << d->val << endl;
-    	else cout << "Data not found !" << endl<< endl;
-    
-        /*
-        	overloaded < 
-        	overloaded < 
-        	overloaded < 
-        	binary_search result :1
-        */
-    	bool res = binary_search(v.begin(), v.end(), A(16));
-    	cout << "binary_search result :" << res << endl;
-    	return 0;
-    }
-    ```
-
-#### 容器对比
-
-|      容器      | 迭代器类别 | 操作时间复杂度 | 支持算法 |      |
-| :------------: | :--------: | :------------: | :------: | :--: |
-|     vector     |  随机访问  |                |          |      |
-|    dequeue     |  随机访问  |                |          |      |
-|      list      |    双向    |                |          |      |
-|      set       |    双向    |                |          |      |
-|    multiset    |    双向    |                |          |      |
-|      map       |    双向    |                |          |      |
-|    multimap    |    双向    |                |          |      |
-|     stack      |   不支持   |                |          |      |
-|     queue      |   不支持   |                |          |      |
-| priority_queue |   不支持   |                |          |      |
+|      容器      | 迭代器类别 | 操作时间复杂度[插入、查询、删除] |                           支持算法                           |
+| :------------: | :--------: | :------------------------------: | :----------------------------------------------------------: |
+|     vector     |  随机访问  |         O(N)，O(1),O(N)          |                                                              |
+|    dequeue     |  随机访问  |                                  | 所有适合于vector的都适用于dequeue，另外支持push_front和pop_front。 |
+|      list      |    双向    |                                  |                                                              |
+|  multiset/set  |    双向    |                                  | find(x>y&&y>x即为相等)，lower_bound，upper_bound，equal_range，count，insert。 |
+|  multimap/map  |    双向    |                                  |                                                              |
+|     stack      |   不支持   |                                  |                                                              |
+|     queue      |   不支持   |                                  |                                                              |
+| priority_queue |   不支持   |                                  |                                                              |
 
 其中：
 
@@ -249,80 +167,181 @@ p+=i;p-=i;p[i];p+i;p-i;p<p1;p<=p1;p>p1;p>=p1;p-p1(计算p到p1之间元素的个
 
 ++p;p++;--p;p--;*p;p!=p1;p==p1;
 
+## STL常用算法
 
+​	在前面我们了解到C++提供的STL还提供了一系列的性能不错的算法实现，在使用这些算法之前，我们先要了解STL中的“大”、“小”和“相等”概念，默认：
 
-## 函数对象
+```C++
+x比y小等价于x<y等价于y比x大
 
-函数对象是在类的定义中重载()运算符，在对象使用时可以达到和函数调用相同的效果。
+x和y相等，则有如下两种情况：
+x==y;比如顺序查找find函数。
+(x<y)为假和(y>x)同时为假，如binary_search。
+```
 
-应用示例如下：
+接下来自定义一个类A重载==和<运算符，调用find和binary_search算法展示两种不同不同情况的相等处理，实现代码如下：
 
 ```C++
 #include <iostream>
+#include <vector>
+#include <map>
+#include <algorithm>
 using namespace std;
 class A
 {
 public:
-	int operator()(int a, int b);
-private:
-	int _pow;
+	int val;
+	A(int t);
+    //必须为常量成员函数，否则编译会出错
+	bool operator ==(const A& v) const;
+    //必须为常量成员函数，否则编译会出错
+	bool operator < (const A& v) const;
 };
-int A::operator()(int a, int b)
-{
-	return a * b;
+
+A::A(int t){
+	val = t;
 }
-int main(int argc, char* argv[]){
-	A tmp;
-	int res = tmp(2, 3);
-	cout << res << endl;
+
+bool A::operator==(const A& v)const
+{
+	cout << "overloaded == " << endl;
+	return val == v.val;
+}
+
+bool A::operator<(const A& v) const
+{
+	cout << "overloaded < " << endl;
+	return false;
+}
+
+int main(int argc, char* argv[])
+{
+    /*	
+    	构造一个6，8,10组成的vector容器
+    	由于要使用binary_search进行搜索，数据要按照大小进行排序
+    */
+	vector<A> v;
+	v.push_back(A(6)); v.push_back(A(8)); v.push_back(A(10));
 	return 0;
 }
 ```
 
-### 函数对象的应用
+**测试用例一：**
 
-1. STL中模板调用，如accumulate等等。
+```C++
+    vector<A>::iterator d = find(v.begin(), v.end(), A(6));
+	cout << "--- " << d->val << endl;
+```
 
-   ```C++
-   #include <iostream>
-   #include <vector>
-   #include <numeric>
-   using namespace std;
-   class A
-   {
-   public:
-   	A(int init){ _init = init; }
-   	int operator()(int total, int b);
-   private:
-   	int _init;
-   };
-   int A::operator()(int total, int b)
-   {
-   	static bool inited = false;
-   	if (!inited){
-   		total += _init;
-   		inited = true;
-   	}
-   	return total + b;
-   }
-   
-   int multi(int total, int b){
-   	return total + b;
-   }
-   
-   int main(int argc, char* argv[]){
-   	vector<int> v;
-   	v.push_back(1); v.push_back(2); v.push_back(3); v.push_back(4);
-   	A tmp(0);
-   	int res = accumulate(v.begin(), v.end(), 10, tmp);					//20
-   	cout << res << endl;
-   	res = accumulate(v.begin(), v.end(), 10, multi);					//20
-   	cout << res << endl;
-   	return 0;
-   }
-   ```
+程序运行结果如下：
 
-2. greater/less函数对象类模板可以用来规定升序排序的方法。关联容器和STL很多算法都可以自定义比较器。在自定义比较器中，下面的描述等价：**x小于y**等价于**op(x,y)为真**等价于**y大于x**。
+```C++
+overloaded == 
+--- 6
+```
+
+**测试用例二：**
+
+```C++
+    d = find(v.begin(), v.end(), A(16));
+	if (d != v.end()) cout << "--- " << d->val << endl;
+	else cout << "Data not found !" << endl<< endl;
+```
+
+运行结果：
+
+```C++
+overloaded ==
+overloaded ==
+overloaded ==
+Data not found !
+```
+
+**测试用例三:**
+
+```C++
+	//查找任何数字都是相同的效果。
+	bool res = binary_search(v.begin(), v.end(), A(16));
+	cout << "binary_search result :" << res << endl;
+```
+
+运行结果：
+
+```C++
+overloaded < 
+overloaded < 
+overloaded < 
+binary_search result :1
+```
+
+​	上面的用例可以看出find使用==从起始位置开始判断，为true则查找停止并返回，查找至末尾没有查找到则返回最后一个元素，表示查找失败。而binary_search则使用<进行判断，由于始终返回的都是false，导致算法以为第一个元素6就是查找的目标。
+
+### 自定义排序规则
+
+​	STL中自定义排序规则中默认使用greater/less函数模板，用户可以通过下述方式实现自定义排序规则：函数对象。
+
+
+
+#### 自定义函数对象比较规则
+
+​	自定了比较器compare之后，下面的表述是等价的
+
+```C++
+x小于y等价于compare(x,y)为真等价于y大于x
+```
+
+​	关联容器中元素排序默认使用greater/less，用户可以通过函数对象实现自定义比较规则。
+
+​	下面自定MyLess类实现将成员n的个位数较小为真，进行使用实例展示。
+
+```C++
+#include <iostream>
+#include <algorithm>
+#include <functional>
+#include <list>
+using namespace std;
+class MyLess
+{
+public:
+	bool operator()(int total, int b);
+};
+bool MyLess::operator()(int a, int b)
+{
+	//按照个位数大小进行排序
+	return (a % 10) > (b % 10);
+}
+int main(int argc, char* argv[])
+{
+	list<int> l;
+	l.push_back(41); l.push_back(22); l.push_back(37); l.push_back(16);
+	list<int>::iterator tmp;
+	return 0;
+}
+```
+
+**测试用例一：**
+
+```C++
+	//按照MyLess函数对象规则进行排序，并将排序结果打印。
+	l.sort(MyLess());
+	for (tmp = l.begin(); tmp != l.end(); tmp++){
+		cout << *tmp << " ";
+	}
+	cout << endl;					//37 16 22 41
+```
+
+**测试用例二：**
+
+```
+
+	l.sort(less<int>());			//从小到大排序
+	for (tmp = l.begin(); tmp != l.end(); tmp++){
+		cout << *tmp << " ";
+	}
+	cout << endl;					//35 21 16 2
+```
+
+#### 自定义类的排序规则
 
 ```C++
 #include <iostream>
@@ -333,36 +352,36 @@ using namespace std;
 class A
 {
 public:
-	bool operator()(int total, int b);
+	int n;
+	A(int a){ n = a; };
 };
-bool A::operator()(int a, int b)
-{
-	//按照十位数大小进行排序
-	return (a / 10) > (b/10);
-}
+
+struct compareA{
+	bool operator()(const A& a, const A& b)
+	{
+		//按照个位数大小进行排序
+		return (a.n % 10) > (b.n % 10);
+	}
+};
+
 int main(int argc, char* argv[])
 {
-	list<int> l;
-	l.push_back(21); l.push_back(2); l.push_back(35); l.push_back(16);
-	list<int>::iterator tmp;
-#if 1
-	A a;
-	l.sort(a);
+	list<A> l;
+	l.push_back(A(41)); l.push_back(A(22)); l.push_back(A(37)); l.push_back(A(16));
+	list<A>::iterator tmp;
+
+	l.sort(compareA());
 	for (tmp = l.begin(); tmp != l.end(); tmp++){
-		cout << *tmp << " ";
+		cout << tmp->n << " ";
 	}
-	cout << endl;					//35 21 16 2
-#else
-	l.sort(less<int>());			//从小到大排序
-	for (tmp = l.begin(); tmp != l.end(); tmp++){
-		cout << *tmp << " ";
-	}
-	cout << endl;					//35 21 16 2
-#endif
-	system("pause");
+	cout << endl;					//37 16 22 41
 	return 0;
 }
 ```
+
+
+
+ostream_iterator
 
 #### 
 
