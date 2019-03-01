@@ -17,6 +17,8 @@ description:
 
 ​	容器是用于容纳各种数据类型(基本类型变量、对象)通用的数据结构，是类模板。对象插入容器中时，被插入的对象是复制品，有些算法需要对元素进行排序、查找和比较，而有的容器本身就已经进行排序，导致很多容器所属的类常常需要重载==和<元素符。容器可分为三类：
 
+
+
 #### 顺序容器
 
 ##### vector
@@ -34,41 +36,194 @@ description:
 
 ​	list是双向链表，不支持随机存取，且元素在内存不连续放任何位置增删有较好的性能。 
 
+
+
 #### 关联容器
 
 1. 插入任何元素，都按相应的排序规则(从小到大)来确定其位置
 2. 查找时具有很好的性能，通常以平衡二叉树方式实现， 插入和检索的时间都是 O(log(N))。
 
+
+
 ##### set/multiset
 
-集合，set和multiset的区别在于set不允许元素重复，而multiset则允许有元素重复。
+​	集合，set和multiset的区别在于set不允许元素重复，而multiset则允许有元素重复。
 
 ```C++
-//Compare:		决定其中元素中的大小是如何定义的，其缺省类型是less<key>
-template < 
-		   class T, 							//multiset::key_type/value_type
-           class Compare = less<T>,        		// multiset::key_compare/value_compare
-           class Alloc = allocator<T> >    		// multiset::allocator_type
-		> class multiset;
+//Compare决定了排序规则，如果采用默认的less模板，需要重载<.
+template<
+	class Key,
+    class Compare = std::less<Key>,
+    class Allocator = std::allocator<Key>
+> class multiset;
 ```
+
+使用示例：
+
+```C++
+#include <set>
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	set<int> tmp{1, 2, 3, 4, 3, 5};
+	set<int>::iterator d;
+	for (d = tmp.begin(); d != tmp.end(); d++){
+		cout << *d << " ";
+	}
+	cout << endl;												//1 2 3 4 3 5
+	
+    //插入元素
+	pair<set<int>::iterator, bool> status = tmp.insert(5);
+	if (status.second)
+		cout << "Insert successfully !" << endl;
+	else
+		cout << *status.first << " already existed !" << endl;	//5 already existed !
+	
+    /*	equal_range的返回值std::pair
+    	first指向第一个比要查找的值小的元素，second返回指向第一个比要查找的值小大的元素
+    */
+	pair<set<int>::iterator, set<int>::iterator> range = tmp.equal_range(4);
+	cout << *range.first << " " << *range.second << endl;					//4 5
+	return 0;
+}
+```
+
+
 
 ##### map/multimap
 
-map和set的区别在于map存放的元素有且只有两个成员变量，map根据第一个成员变量大小进行从小到大的排序并可以根据第一个成员变量进行进行元素检索。而map和multimap的区别在于是否允许有相同的第一个成员变量。
+​	map和set的区别在于map存放的元素有且只有first和second两个成员变量，map根据第一个成员变量大小进行从小到大的排序并可以根据第一个成员变量进行元素检索。而map和multimap的区别在于是否允许有相同的第一个成员变量。
+
+```C++
+//Compare决定排序规则，默认使用less模板
+template < class Key,                                     // multimap::key_type
+           class T,                                       // multimap::mapped_type
+           class Compare = less<Key>,                     // multimap::key_compare
+           class Alloc = allocator<pair<const Key,T> >    // multimap::allocator_type
+> class multimap;
+```
+
+
+
+```C++
+#include <map>
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main()
+{
+	map<string, float> achieve {
+				map<string, float>::value_type("Amy", 89),
+				map<string, float>::value_type("Lily", 98), 
+				map<string, float>::value_type("Bob", 95) 
+	};
+    achieve["Lucy"] = 86;						//不存在key值为Lucy的，则插入
+	map<string, float>::iterator d;
+	for (d = achieve.begin(); d != achieve.end(); d++)
+		cout << d->first << " : " << d->second << endl;
+	
+    string key = "Bob";
+	cout << achieve[key] << endl;				//95
+	achieve[key] = 100;							//key值为Bob已经存在，则修改value值为100
+	cout << achieve[key] << endl;				//100
+    
+    //向map中插入元素
+	pair<map<string, float>::iterator, bool> status = achieve.insert(map<string, float>::value_type("Jack", 85));
+	if (status.second)
+		cout << "Insert successfully !" << endl;
+	else
+		cout << status.first->first << ":" << status.first->second << " has been inserted !" << endl;
+	 
+    //equal_range的返回first指向第一个比要查找小的元素，second返回指向第一个比要查找大的元素
+	pair<map<string, float>::iterator, map<string, float>::iterator> res = achieve.equal_range("Bob");
+	cout << "First	" << res.first->first << " : " << res.first->second << endl;	//First	Bob : 95
+	cout << "Second "<< res.second->first << " : " << res.second->second << endl;	//Second Jack : 85
+	return 0;
+}
+```
+
+
 
 #### 容器适配器
 
 ##### stack
 
-先进后出，删除、查找和修改项只能是最近插入的项(栈顶元素)。
+​	先进后出，删除、查找和修改项只能是最近插入的项(栈顶元素)。可以通过vector、list、dequeue来实现，缺省用dequeue实现。
+
+| 操作 |      意义      |
+| :--: | :------------: |
+| push |    插入元素    |
+| pop  |    弹出元素    |
+| top  | 栈顶元素的引用 |
+
+
 
 ##### queue
 
-先进先出，删除、查找和修改项只能在头部进行。
+​	先进先出，删除、查找和修改项只能在头部进行。和stack一样，它也可以使用list、dequeue来实现，缺省用dequeue实现。
+
+| 操作 |       意义       |
+| :--: | :--------------: |
+| push |  在尾部插入元素  |
+| back | 获取队尾元素引用 |
+| pop  |   头部弹出元素   |
+| top  | 获取队头元素引用 |
+
+
 
 ##### priority_queue
 
-优先级队列，最高优先级的元素总是第一个出列。
+​	优先级队列，最高优先级的元素总是第一个出列。和queue类似，可以使用vector和的dequeue实现，缺省使用vector实现。它采用的堆栈技术，保证执行操作的元素总是优先级最大的元素，它采用的默认比较器是less模板。
+
+```C++
+//Container	声明容器类型
+//Compare	制定排序规则
+template<
+    class T,
+    class Container = std::vector<T>,
+    class Compare = std::less<typename Container::value_type>
+> class priority_queue;
+```
+
+| 操作 |               意义               | 操作时间复杂度 |
+| :--: | :------------------------------: | :------------: |
+| pop  |       删除优先级最高的元素       |    O(logN)     |
+| push |             插入元素             |    O(logN)     |
+| top  | 返回优先级最高的元素的**常引用** |      O(1)      |
+
+操作示例：
+
+```C++
+#include <queue>
+#include <iostream>
+#include <functional>
+using namespace std;
+
+int main()
+{
+    //采用默认的vector容器以及less模板进行排序
+	priority_queue<float> priQue;
+	priQue.push(4.3);priQue.push(1.2);priQue.push(6.7);priQue.push(0.2);
+	while (!priQue.empty()){
+		cout << priQue.top() << endl;		//6.7 4.3 1.2 0.2
+		priQue.pop();
+	}
+	
+    //修改排序规则为greater
+	priority_queue<float, vector<float>, greater<float> > priQue2;
+	priQue2.push(4.3); priQue2.push(1.2); priQue2.push(6.7); priQue2.push(0.2);
+	while (!priQue2.empty()){
+		cout << priQue2.top() << endl;		//0.2 1.2 4.3 6.7
+		priQue2.pop();
+	}
+	return 0;
+}
+```
+
+
 
 ### 迭代器
 
@@ -278,9 +433,7 @@ binary_search result :1
 
 ### 自定义排序规则
 
-​	STL中自定义排序规则中默认使用greater/less函数模板，用户可以通过下述方式实现自定义排序规则：函数对象。
-
-
+​	STL中自定义排序规则中默认使用greater/less函数模板，用户可以通过下述方式实现自定义排序规则：函数对象和重载<运算符。
 
 #### 自定义函数对象比较规则
 
@@ -291,6 +444,8 @@ x小于y等价于compare(x,y)为真等价于y大于x
 ```
 
 ​	关联容器中元素排序默认使用greater/less，用户可以通过函数对象实现自定义比较规则。
+
+##### 定义函数对象
 
 ​	下面自定MyLess类实现将成员n的个位数较小为真，进行使用实例展示。
 
@@ -332,7 +487,7 @@ int main(int argc, char* argv[])
 
 **测试用例二：**
 
-```
+```C++
 
 	l.sort(less<int>());			//从小到大排序
 	for (tmp = l.begin(); tmp != l.end(); tmp++){
@@ -341,7 +496,45 @@ int main(int argc, char* argv[])
 	cout << endl;					//35 21 16 2
 ```
 
-#### 自定义类的排序规则
+##### 重载<运算符
+
+​	sort函数默认使用less模板进行大小比较，而less模板是使用<进行大小判断的，下面两种实现分别重载<运算符以及用compareA替换默认的less来实现排序并达到了相同的效果。
+
+```C++
+#include <iostream>
+#include <algorithm>
+#include <functional>
+#include <list>
+using namespace std;
+class A
+{
+public:
+	int n;
+	A(int a){ n = a; };
+	friend bool operator< (const A& a, const A& b);
+};
+
+bool operator <(const A& a, const A& b)
+{
+	return (a.n % 10) > (b.n % 10);
+}
+
+int main(int argc, char* argv[])
+{
+	list<A> l;
+	l.push_back(A(41)); l.push_back(A(22)); l.push_back(A(37)); l.push_back(A(16));
+	list<A>::iterator tmp;
+
+	l.sort();
+	for (tmp = l.begin(); tmp != l.end(); tmp++){
+		cout << tmp->n << " ";
+	}
+	cout << endl;					//37 16 22 41
+	return 0;
+}
+```
+
+
 
 ```C++
 #include <iostream>
@@ -378,6 +571,10 @@ int main(int argc, char* argv[])
 	return 0;
 }
 ```
+
+
+
+
 
 
 
