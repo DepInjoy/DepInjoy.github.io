@@ -9,7 +9,7 @@ description:
 
 ### 构造第一个Spring工程
 
-​	目前大多数大多数使用的Idea、Eclipse集成开发工具，我选择使用Idea，在本文基于此进行一些介绍。和其他的编程语言类似，以打印Hello World为例构造第一个Spring工程。
+​	目前大多数大多数使用的Idea、Eclipse集成开发工具，我选择使用Idea，在本文基于此进行一些介绍，首先推荐[博客](http://tengj.top/2017/02/26/springboot1/)很详细描述了如何从零构建一个项目。和其他的编程语言类似，以打印Hello World为例构造第一个Spring工程。
 
 1. 通过Web下载[项目安装](http://start.spring.io)，填写Group、Artifact以及dependencies，之后点击生成工程。
 
@@ -17,13 +17,33 @@ description:
 
 3. 打开IDea，选择文件->Import Project，在对话框中找到工程目录打开。
 
-   ​	如果找不到Import Project选项可以[参考博客]()手动添加。
+   ​	如果找不到Import Project选项可以[参考博客](https://blog.csdn.net/zengxiaosen/article/details/52807540)手动添加。
 
-4. 工程打开后，右键，选择运行该项目即可。
+4. 编写实现代码
 
-# 初始化Spring Boot项目以及项目结构
+   ```Java
+   package coco.spring.hello.hellospring;
+   import org.springframework.boot.SpringApplication;
+   import org.springframework.boot.autoconfigure.SpringBootApplication;
+   import org.springframework.web.bind.annotation.RequestMapping;
+   import org.springframework.web.bind.annotation.RestController;
+   
+   @SpringBootApplication
+   @RestController
+   public class HelloSpringApplication {
+   	public static void main(String[] args) {
+   		SpringApplication.run(HelloSpringApplication.class, args);
+   	}
+   	@RequestMapping("/hello")
+   	public String hello(){
+   		return "Hello Spring";
+   	}
+   }
+   ```
 
-[博客](http://tengj.top/2017/02/26/springboot1/)很详细描述了如何从零构建一个项目。
+5. 工程打开后，右键，选择运行该项目即可。
+
+6. 在网页输入http://localhost:8080/hello即可看到Hello Spring字样。
 
 # 问题附录
 

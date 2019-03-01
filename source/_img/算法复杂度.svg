@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="chart" width="800" height="500">
+            <!-- horrible region -->
+            <path fill="#ff8989" d="M 50 450 L 50 0 L 800 0 L 800 450 Z" />
+            <!-- bad region -->
+            <path fill="#ffc543" d="M 50 450 L 800 0 L 800 450 Z" />
+            <!-- fair region -->
+            <path fill="yellow" d="M 50 450 L 800 450 L 800 330 Z" />
+            <!-- good region -->
+            <path fill="#c8ea00" d="M 50 450 L 800 450 L 800 410 Z" />
+            <!-- excellent region -->
+            <path fill="#53d000" d="M 50 450 L 800 450 L 800 440 Z" />
+
+            <!-- axes -->
+            <path fill="transparent" stroke="black" stroke-width="2" d="M 50 0 L 50 450 L 800 450" />
+
+            <path fill="transparent" stroke="black" stroke-width="2" d="M 50 448 L 800 448" />
+            <text fill="black" x="700" y="438">O(log n), O(1)</text>
+
+            <path fill="transparent" stroke="black" stroke-width="2" d="M 50 450 L 800 400" />
+            <text fill="black" x="760" y="390">O(n)</text>
+
+            <path fill="transparent" stroke="black" stroke-width="2" d="M 50 450 Q 400 350 800 150" />
+            <text fill="black" x="630" y="190">O(n log n)</text>
+
+            <path fill="transparent" stroke="black" stroke-width="2" d="M 50 450 Q 180 380 250 0" />
+            <text fill="black" x="260" y="30">O(n^2)</text>
+
+            <path fill="transparent" stroke="black" stroke-width="2" d="M 50 450 C 100 430 120 350 120 0" />
+            <text fill="black" x="125" y="20">O(2^n)</text>
+
+            <path fill="transparent" stroke="black" stroke-width="2" d="M 50 450 C 80 450 80 350 80 0" />
+            <text fill="black" x="80" y="20">O(n!)</text>
+
+            <text style="dominant-baseline: middle; text-anchor: middle; font-size:20px; color: #555; font-size:20px; color: #555; font-style: italic;" fill="black" transform="translate(30 230) rotate(-90)" x="0" y="0">Operations</text>
+            <text style="dominant-baseline: middle; text-anchor: middle; font-size:20px; color: #555; font-style: italic;" fill="black" transform="translate(420 470)" x="0" y="0">Elements</text>
+          </svg>
