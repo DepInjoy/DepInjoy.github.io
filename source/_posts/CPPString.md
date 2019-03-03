@@ -69,22 +69,6 @@ string tmp0;
 getline(cin, tmp0);
 ```
 
-### 字符串流处理
-
-​	string除了支持输入输出，还支持对string进行输入输出，用istringstream 和ostringstream对字符串进行输入输出，也称为内存输入输出。
-
-```C++
-	string tmp("Input test 168 12.4 F");
-	istringstream istr(tmp);
-	string str1, str2;
-	int i;
-	double d;
-	char c;
-	istr >> str1 >> str2 >> i >> d >> c; //Input test 168 12.4 F
-```
-
-
-
 ## 赋值
 
 - 通过=和assign进行赋值，两者的不同在于assign可以实现部分赋值。
@@ -142,24 +126,6 @@ getline(cin, tmp0);
 	int length = tmp.length();
 	cout << length << endl;
 ```
-
-### 插入
-
-- 在index索引处插入str的从index_str索引开始的count个字符。
-
-```C++
-basic_string& insert( size_type index, const basic_string& str, 
-                      size_type index_str, size_type count ); 
-index位置插入常量str的从index_str开始的count个字符
-```
-
-```C++
-	string tmp("Hello World!");
-	string str("NICE");
-	tmp.insert(1, str, 1,3);		//HICEello World!
-```
-
-
 
 ## 交换
 
@@ -247,20 +213,7 @@ swap函数实现交换。
   	res = tmp0.find_last_not_of("ah");				//4
   ```
 
-  ### 替换
-
-  ```C++
-  //将字符串中从索引为pos位置开始len的字符替换为str。
-  string& replace (size_t pos, size_t len, const string& str); 
-  ```
-
-  ```C++
-  string tmp("Hello World!");
-  tmp.replace(0,2, "AHAAAA");		//AHAAAAllo World!
-  ```
-
-  ### 删除
-
+  ## 删除
 - erase删除pos索引以及以后的字符
 
 ```C++
@@ -289,27 +242,6 @@ string tmp("Hello World!");
 //从索引为6的取5个字符
 string str = tmp.substr(6, 5)			//World
 ```
-
-
-
-### 将string转化为C语言的char*
-
-​	c_str返回的字符串包含```/0```，而data返回的结果却没有。
-
-```C++
-const char* c_str ( ) const;
-const char* data() const;
-```
-
-
-
-```C++
-	string tmp("Hello World!");
-	const char* ctmp = tmp.c_str();
-	const char* ctmp2 = tmp.data();
-```
-
-
 
 
 

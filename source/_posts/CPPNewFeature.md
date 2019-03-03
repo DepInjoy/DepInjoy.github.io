@@ -169,3 +169,100 @@ bool f = nullptr;	// false
 int i = nullptr; 	// nullptr不可以转化为整形
 ```
 
+
+
+### 右值引用和move语义
+
+​	右值引用（及其支持的Move语意和完美转发）是C++0x加入的最重大语言特性之一。从实践角度讲，它能够完美解决C++中长久以来为人所诟病的临时对象效率问题。从语言本身讲，它健全了C++中的引用类型在左值右值方面的缺陷。从库设计者的角度讲，它给库设计者又带来了一把利器。从库使用者的角度讲，不动一兵一卒便可以获得“免费的”效率提升… 
+
+​	一般来说无法取地址的表达式就是右值，而可以取地址的表达式是左值。它的主要目的是提高程序运行效率，减少需要进行深浅拷贝对象的深浅拷贝次数。
+
+```C++
+#include <iostream>
+#include <sstream>
+#include <string>
+using namespace std;
+
+class String
+{
+public:
+	char* str;
+	String();
+	String(const char* s);
+	String(const String& s);
+	String& operator=(const String& s);
+
+	String(String&& s);
+	String& operator=(String&& s);
+
+	~String() { delete []str; }
+};
+String::String()
+{
+	str = new char[1];
+	str[0] = 0;
+}
+String::String(const char* s)
+{
+	str = new char[strlen(s) + 1];
+	strcpy_s(str, strlen(s) + 1, s);
+}
+String::String(const String& s)
+{
+	cout << "copy constructor called !" << endl;
+	str = new char[strlen(s.str) + 1];
+	strcpy_s(str, strlen(s.str) + 1, s.str);
+}
+String& String::operator=(const String& s)
+{
+	cout << "= called !" << endl;
+	if (str != s.str) {
+		delete []str;
+		str = new char[strlen(s.str) + 1];
+		strcpy_s(str, strlen(s.str) + 1, s.str);
+	}
+	return *this;
+}
+
+String::String(String&& s) :str(s.str)
+{
+	cout << "move constructor " << endl;
+	str = new char[1];
+	str[0] = 0;
+}
+String& String::operator=(String&& s)
+{
+	cout << "move = called " << endl;
+	if (str != s.str) {
+		delete str;
+		str = s.str;
+		s.str = new char[1];
+		s.str[0] = 0;
+	}
+	return *this;
+}
+
+template<class T>
+void Tswap(T &t1, T &t2)
+{
+	T tmp(move(t1));
+	t1 = move(t2);
+	t2 = move(tmp);
+}
+int main(int argc, char* argv[])
+{
+	String s;
+	s = String("Hello");
+	cout << "----------------------------" << endl;
+	String &&s1 = String("World");
+
+	String s0("Nice"), s00(" to meet you!");
+	Tswap(s0, s00);
+	cout << s0.str << endl;
+	cout << s00.str << endl;
+
+	system("pause");
+	return 0;
+}
+```
+

@@ -1,13 +1,13 @@
-﻿---
+---
 layout: post
 title: C++内存申请、释放以及管理
 date: 2017-3-16 18:04
 category: CPP
 tags: [CPP]
 description: 本文主要描述C++中内存的申请、释放的方法。
-1、new和malloc的区别
-2、static变量实现的机理。
----
+​	1、new和malloc的区别
+
+​	2、static变量实现的机理。
 
 
 
