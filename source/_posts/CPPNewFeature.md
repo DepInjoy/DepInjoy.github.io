@@ -266,3 +266,29 @@ int main(int argc, char* argv[])
 }
 ```
 
+
+
+### 基于范围的for循环
+
+```C++
+#include <memory>
+#include <vector>
+#include <iostream>
+using namespace std;
+
+int main(int argc, char* agv[])
+{
+	vector<int> v{ 0, 1, 2, 3, 4, 5 };
+	for (auto& it : v){
+		cout << it << endl;
+	}
+
+	int array[6]{0, 1, 2, 3, 4, 5};
+	for (int v : array){
+		cout << v << endl;
+	}
+	return 0;
+}
+
+```
+
