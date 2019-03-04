@@ -158,7 +158,7 @@ String& String::operator=(String&& s)
 	String &&s1 = String("World");
 ```
 
-std::move可以将一个左值转化为右值，右值运算可以很明显提高swp的运行效率，这是广泛使用的示例，让我觉得奇怪的是下面的交换实现t2并非t1的内容，实际上t2=0,这样的交换是否五意义了？
+std::move可以将一个左值转化为右值，右值运算可以很明显提高swp的运行效率.
 
 ```C++
 template<class T>
