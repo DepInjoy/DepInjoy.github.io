@@ -301,16 +301,16 @@ int main(int argc, char* argv[])
 
 从支持的迭代器类、操作时间复杂度以及支持算法几个维度对常用的容器进行对比。
 
-|      容器      | 迭代器类别 | 操作时间复杂度[插入、查询、删除] |                           支持算法                           |
-| :------------: | :--------: | :------------------------------: | :----------------------------------------------------------: |
-|     vector     |  随机访问  |         O(N)，O(1),O(N)          |                                                              |
-|    dequeue     |  随机访问  |                                  | 所有适合于vector的都适用于dequeue，另外支持push_front和pop_front。 |
-|      list      |    双向    |                                  |                                                              |
-|  multiset/set  |    双向    |                                  | find(x>y&&y>x即为相等)，lower_bound，upper_bound，equal_range，count，insert。 |
-|  multimap/map  |    双向    |                                  |                                                              |
-|     stack      |   不支持   |                                  |                                                              |
-|     queue      |   不支持   |                                  |                                                              |
-| priority_queue |   不支持   |                                  |                                                              |
+|      容器      | 迭代器类别 | 数据结构     | 操作时间复杂度[插入、查询、删除] |                           支持算法                           |
+| :------------: | :--------: | ------------ | :------------------------------: | :----------------------------------------------------------: |
+|     vector     |  随机访问  | 动态扩容数组 |         O(N)，O(1),O(N)          |                                                              |
+|    dequeue     |  随机访问  | 双向队列     |                                  | 所有适合于vector的都适用于dequeue，另外支持push_front和pop_front。 |
+|      list      |    双向    | 双向链表     |                                  |                                                              |
+|  multiset/set  |    双向    |              |                                  | find(x>y&&y>x即为相等)，lower_bound，upper_bound，equal_range，count，insert。 |
+|  multimap/map  |    双向    | 红黑树       |                                  |                                                              |
+|     stack      |   不支持   |              |                                  |                                                              |
+|     queue      |   不支持   |              |                                  |                                                              |
+| priority_queue |   不支持   |              |                                  |                                                              |
 
 其中：
 
