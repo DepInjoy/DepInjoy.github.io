@@ -50,7 +50,7 @@ int main(int argc, char* argv[])
 
     //My first program is Hello World! oh Yeah
 	std::string res;
-	std::regex_replace(std::back_inserter(res), str.begin(), str.end(), r, "Hello");
+	std::regex_replace(std::back_inserter(res), str.begin(), str.end(), std::regex("Fuck"), "Hello");
 	std::cout << res << std::endl;
 	return 0;
 }
