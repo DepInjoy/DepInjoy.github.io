@@ -7,8 +7,6 @@ tags: [CPP]
 description: 
 ---
 
-[博客](http://blog.topspeedsnail.com/archives/6810)
-
 ### 算法
 
 ```C++
