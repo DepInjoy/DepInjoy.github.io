@@ -195,3 +195,47 @@ int main(int argc, char* agv[])
 
 ```
 
+
+
+### 强制类型转换
+
+
+
+#### static_cast
+
+​	用来进行比较低风险之间的转换，如整型和实数，整形和字符等等之间的转换。它不可以进行不同类型指针、不同类型之间引用，整数和指针之间转化。
+
+```C++
+#include <iostream>
+class A {
+public:
+	operator int()	 { std::cout << "A::int " << std::endl;		return 8; }
+	operator char*() { std::cout << "A::char* " << std::endl;	return NULL; }
+};
+
+void main(void)
+{
+	A a;
+	char* c = "Hello";
+	int t1 = static_cast<int>(a);		//A::int 
+	char* c1 = static_cast<char*>(a);	//A::char* 
+	char* c2 = static_cast<char*>(c);	//Hello
+	std::cout << c2 << std::endl;
+	//不允许将指针转化为int
+    //int p = static_cast<int>(c1);
+    //不允许将int转化为指针
+	//char* c3 = static_cast<char*>(t1);
+}
+```
+
+
+
+#### reinterpret_cast
+
+
+#### const_cast
+
+
+
+#### dynamic_cast
+
