@@ -231,11 +231,93 @@ void main(void)
 
 
 #### reinterpret_cast
+```C++
+#include <iostream>
+class A {
+public:
+	int m;
+	int n;
+	A(int i) :m(i), n(i) {};
+};
+void main(void)
+{
+	A a(8);
+    //使tmp引用a
+	int &tmp = reinterpret_cast<int&>(a);
+	tmp = 16;
+	std::cout << a.m << " " << a.n << std::endl;	//16 8
+}
+```
+
 
 
 #### const_cast
 
+​	用来去除const属性。将const引用转化为非const引用，将const指针转化为非const指针。
+
+```C++
+#include <iostream>
+void main(void)
+{
+	const std::string s = "Hello World";
+	std::string &tmp0 = const_cast<std::string&>(s);
+	std::cout << tmp0.data() << std::endl;						//Hello World
+	tmp0 = "Next";
+	std::cout << tmp0.data() << " " << s.data() << std::endl;	//Next Next
+	std::string *tmp1 = const_cast<std::string*>(&s);
+	std::cout << tmp1->data() << std::endl;						//Next
+	system("pause");
+}
+```
+
 
 
 #### dynamic_cast
+
+​	专门用于将多态基类的指针或者引用转化为派生类指针或者引用，该转换很安全，如果不安全，则会返回为NULL。如果转化时不安全的，会抛出bad_cast异常。
+
+```C++
+#include <iostream>
+class Base {};
+class Derived : public Base {};
+void main(void)
+{
+	Base b;
+	Derived d;
+	Base* tmp0 = dynamic_cast<Base*>(&d);
+	if (!tmp0) std::cout << "0 dynamic cast sec " << std::endl;
+
+	Derived* tmp1 = dynamic_cast<Derived*>(&d);
+	if (!tmp1) std::cout << "1 dynamic cast failed " << std::endl;
+
+	Base& tmp2 = dynamic_cast<Derived&>(d);
+	if(!&tmp2) std::cout << "2 dynamic cast failed " << std::endl;
+}
+```
+
+
+
+### 异常处理
+
+```C++
+#include <iostream>
+double div(double a, double b)
+{
+	if (b == 0.0) {
+		throw(-1);			//抛出异常
+	}
+	return a / b;
+}
+void main(void)
+{
+    //捕捉异常并进行处理
+	try{
+		div(1.0, 0.0);
+	}catch (int e){
+		std::cout << "not allowed " << e << std::endl;
+	}
+}
+```
+
+
 

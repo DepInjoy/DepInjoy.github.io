@@ -40,27 +40,34 @@ description: 本文主要描述C++中内存的申请、释放的方法。
   }
   ```
 
-- 调用new在堆内为结构体分配一块内存空间，在不需要使用时，使用delete释放该内存空间。
+- 调用new在堆内为结构体分配一块内存空间，在不需要使用时，使用delete释放该内存空间。如果申请失败，则会抛出bad_alloc异常。
 
   ```C++
   #include <iostream>
   using namespace std;
   /*
-  	new运算符实现申请内存，remalloc函数实现调整（增大、减少）内存示例
+  new运算符实现申请内存，remalloc函数实现调整（增大、减少）内存示例
   */
   int main(int argc, char* argv[])
   {
-  	char* tmp = new char[8];
+  	char* tmp = NULL;
+  	try{
+          //申请0x7fffffff个字节就会抛出 bad allocation异常
+  		tmp = new char[8];
+  	}catch (const std::exception& e){
+  		std::cout << e.what() << std::endl;
+  	}
   	cout << _msize(tmp) << endl;					//8
-  	
-      tmp = (char*)realloc(tmp, 16 * sizeof(char));
+  
+  	tmp = (char*)realloc(tmp, 16 * sizeof(char));
   	cout << _msize(tmp) << endl;					//16
   
   	tmp = (char*)realloc(tmp, 6 * sizeof(char));
   	cout << _msize(tmp) << endl;					//6
-      delete []tmp;
+  	delete[]tmp;
+  	system("pause");
   	return 0;
-  } 
+  }
   ```
 
 上述两种申请内存的方式，由如下的区别：

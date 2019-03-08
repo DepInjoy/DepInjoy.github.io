@@ -11,6 +11,20 @@ description: 介绍一些C语言基础知识。
 
 
 
+​	C++语言属于静态数据类型语言，在编译时进行数据类型检查，在编译时就必须知道数据的类型。可以在运行时通过typeid运算符返回的type_info类型的对象。
+
+```C++
+#include <iostream>
+int main(int argc, char* argv[])
+{
+	int a = 0;
+	std::cout << typeid(a).name() << std::endl;
+	return 0;
+}
+```
+
+
+
 C++语言优势：
 
 - 便于软件重用。
