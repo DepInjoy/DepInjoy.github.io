@@ -85,6 +85,44 @@ description: 出于个人堆知识体系搭建考虑，今年下定决心学习�
 
 #### Go编程语言规范
 
+##### 源码文件如何接受输入
+
+```go
+/*
+    go run .\Hello.go -name="Lucy"
+        Hello, Lucy !
+    go run .\Hello.go
+        Hello, everyone !    
+    go run .\Hello.go --HELP
+        Usage of C:\Users\hp\AppData\Local\Temp\go-build817441770\b001\exe\Hello.exe:
+            -name string
+            Greeting object (default "everyone")
+*/
+package main
+import(
+    "flag" ;
+    "fmt"
+)
+
+var name string
+func init(){
+    /*
+    @param0 定义了一个有指定名字。参数p指向一个存储标签解析值的string变量。
+	@param1 指定参数名 应用的时候 在命令行输入 -Args xxx
+	@param2 如果没有指定Args的值，那么Args的内容默认是"defaultValue"
+	@param3 用法说明字符串
+    */
+    flag.StringVar(&name, "name", "everyone", "Greeting object");
+}
+
+func main()  {
+    flag.Parse();
+    fmt.Printf("Hello, %s !\n", name);
+}
+```
+
+
+
 #### Go命令
 
 #### Go基础编程
