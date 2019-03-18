@@ -65,12 +65,6 @@ public:
 };
 ```
 
-#### [链表相邻元素交换](https://leetcode.com/problems/swap-nodes-in-pairs/)
-
-```C++
-
-```
-
 
 
 #### 探测环
@@ -133,9 +127,7 @@ public:
 
 
 
-
-
-
+#### [链表相邻元素交换](https://leetcode.com/problems/swap-nodes-in-pairs/)
 
 ```
 输入：
@@ -143,6 +135,8 @@ public:
 //@返回
 2->1->4->3
 ```
+
+
 
 #### [环形链表](https://leetcode.com/problems/linked-list-cycle-ii/)
 
