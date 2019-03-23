@@ -233,7 +233,50 @@ public:
 #### [判断大中小括号的有效性](https://leetcode.com/problems/valid-parentheses/description/)
 
 ```c++
+检测(, [, { 到直接入栈
+检测到）,], }则判断栈顶是否是对应的(, [, { ，不是则返回false，否则将栈顶元素弹出。
+```
 
+```c++
+class Solution {
+public:
+    bool isValid(string s) {
+        std::stack<char> containter;
+        for(int i = 0; i < s.size();i++) {
+            switch(s[i]){
+                case '(':
+                case '[':
+                case '{':
+                    containter.push(s[i]);
+                    break;
+                case ')':
+                    if(!containter.empty() && containter.top() == '('){
+                        containter.pop();
+                    }else{
+                        return false;
+                    }
+                    break;
+                case ']':
+                    if(!containter.empty() && containter.top() == '['){
+                        containter.pop();
+                    }else{
+                        return false;
+                    }
+                    break;
+                case '}':
+                    if(!containter.empty() && containter.top() == '{'){
+                        containter.pop();
+                    }else{
+                        return false;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        return containter.empty();
+    }
+};
 ```
 
 
@@ -292,7 +335,51 @@ public:
 #### [用队列实现栈](https://leetcode.com/problems/implement-stack-using-queues/description/)
 
 ```C++
-
+class MyStack {
+public:
+    /** Initialize your data structure here. */
+    MyStack() {       
+    
+    }
+    
+    /** Push element x onto stack. */
+    void push(int x) {
+        while(!_queue1.empty()){
+            _queue0.push(_queue1.front());
+            _queue1.pop();
+        }
+        
+        _queue1.push(x);
+        while(!_queue0.empty()){
+            _queue1.push(_queue0.front());
+            _queue0.pop();
+        }
+    }
+    
+    /** Removes the element on top of the stack and returns that element. */
+    int pop() {
+        if(_queue1.empty()) return -1;
+        int value = _queue1.front();
+        _queue1.pop();
+         return value;
+    }
+    
+    /** Get the top element. */
+    int top() {
+        if(_queue1.empty())
+            return -1;
+        return _queue1.front(); 
+    }
+    
+    /** Returns whether the stack is empty. */
+    bool empty() {
+       return _queue1.empty(); 
+    }
+    
+    private:
+        std::queue<int> _queue0;
+        std::queue<int> _queue1;
+};
 ```
 
 
