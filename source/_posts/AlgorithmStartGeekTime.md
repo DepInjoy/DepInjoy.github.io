@@ -216,6 +216,29 @@ public:
 2->1->4->3
 ```
 
+在Leetcode上看到的优秀的提交，看不懂，标记一下。
+
+```C++
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        if(!head || (head && !head->next))
+            return head;
+       
+        ListNode** pp = &head;
+        ListNode* cur = head;
+        ListNode* next = NULL;
+        while((cur = *pp) && (next = cur->next)){
+            cur->next = next->next;
+            next->next = cur;
+            *pp = next;
+            pp = &(cur->next);
+        }
+        return *pp;
+    }
+};
+```
+
 
 
 #### [环形链表](https://leetcode.com/problems/linked-list-cycle-ii/)
