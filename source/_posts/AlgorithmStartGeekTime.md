@@ -407,9 +407,18 @@ public:
 
 
 
-#### 优先队列
+### 优先队列
 
-#### [返回滑动窗口中的最大值]()
+正常进入，按照有限级取出，其实现机制：
 
+- [Heap](https://en.wikipedia.org/wiki/Heap_(data_structure)) (Binary, Binomial, Fibonacci)
+
+- Binary Search Tree
+
+#### [Kth Largest Element in a Stream](https://leetcode.com/problems/kth-largest-element-in-a-stream/)
+
+
+
+#### [返回滑动窗口中的最大值](https://leetcode.com/problems/sliding-window-maximum/)
 
 
