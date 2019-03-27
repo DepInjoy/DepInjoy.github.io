@@ -207,7 +207,7 @@ public:
 
 
 
-#### [链表相邻元素交换](https://leetcode.com/problems/swap-nodes-in-pairs/)
+#### [链表相邻元素交换](https://leetcode-cn.com/problems/swap-nodes-in-pairs/comments/)
 
 ```
 输入：
@@ -409,13 +409,62 @@ public:
 
 ### 优先队列
 
-正常进入，按照有限级取出，其实现机制：
+正常进入，按照优先级取出，它的实现机制：
 
 - [Heap](https://en.wikipedia.org/wiki/Heap_(data_structure)) (Binary, Binomial, Fibonacci)
+  - [小/大顶堆 Min/Max Heap](https://en.wikipedia.org/wiki/Min-max_heap)
+- 二叉搜索树
 
-- Binary Search Tree
+#### [返回输入流中第K大的元素](https://leetcode-cn.com/problems/kth-largest-element-in-a-stream/)
 
-#### [返回输入流中第K大的元素](https://leetcode.com/problems/kth-largest-element-in-a-stream/)
+```
+思路一：
+	保存K个最大值，然后对这K个元素进行排序（快排最快），对应的时间复杂度为N*KlogK。
+思路二：
+	利用优先队列的Min Heap，且该Min Heap的size为K。对应的时间复杂度为N*（1或logK）即N*logK。
+	[ 4,5,8,2,3,9,1]
+	[4,5,8]
+	   [4,5,8]
+	   	  [4,5,8]			  O[1]
+	   	  	 [5,8,9]		  O[log(K)]     
+	   	  	 	[5,8,9]
+```
+
+```C++
+class KthLargest {
+public:
+    
+    KthLargest(int k, vector<int> nums){
+        size = k;
+        for(auto val = nums.begin();val < nums.end();val++){
+            if(minHeap.size() < k){
+                minHeap.push(*val);
+            }else{
+                if(minHeap.top() < *val){
+                    minHeap.pop();
+                    minHeap.push(*val);
+                }
+            }
+        }
+    }
+    
+    int add(int val) {
+        if(minHeap.size() < size){
+            minHeap.push(val);
+        }else{
+            if(minHeap.top() < val){
+                if(!minHeap.empty()) minHeap.pop();
+                minHeap.push(val);
+            }
+        }
+        return minHeap.top();
+    }
+    
+    private:
+        priority_queue<int, deque<int>, greater<int>> minHeap;
+        int size;
+};
+```
 
 
 
@@ -425,6 +474,6 @@ public:
 
 ### Hash表
 
-#### [有效字母异位](https://leetcode.com/problems/valid-anagram/description/)
+####  [有效字母异位](https://leetcode.com/problems/valid-anagram/description/)
 
 
