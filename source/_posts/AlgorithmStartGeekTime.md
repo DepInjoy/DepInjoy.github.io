@@ -415,10 +415,16 @@ public:
 
 - Binary Search Tree
 
-#### [Kth Largest Element in a Stream](https://leetcode.com/problems/kth-largest-element-in-a-stream/)
+#### [返回输入流中第K大的元素](https://leetcode.com/problems/kth-largest-element-in-a-stream/)
 
 
 
 #### [返回滑动窗口中的最大值](https://leetcode.com/problems/sliding-window-maximum/)
+
+
+
+### Hash表
+
+#### [有效字母异位](https://leetcode.com/problems/valid-anagram/description/)
 
 
