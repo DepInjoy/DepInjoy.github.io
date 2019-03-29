@@ -62,6 +62,7 @@ description:
 - pom.xml： Maven构建说明文件。
 - AirplanManagerApplication.java：应用程序执行入口。
 - AirplanManagerApplicationTests.java：空的Junit测试类。
+- src\main\resources\application.properties：全局配置文件，支持自定义属性。[配置文件解析博客推荐](<http://tengj.top/2017/02/28/springboot2/>)
 
 ### JDBC数据源配置
 
@@ -88,13 +89,13 @@ description:
 
   出现该问题是由于没有将IDEA中的maven插件加入系统的环境变量。
 
-- 4 IDEA的终端不识别mvn、java等命令
+- 4  **IDEA的终端不识别mvn、java等命令**
 
   出现该问题的原因是IEAD的cmd没有进行配置，修改File->setting->Terminal 将shell path 修改为系统C:\Windows\System32\cmd.exe。
 
-- 5 The Tomcat connector configured to listen on port 8080 failed to start. The port may already be in use or the connector may be misconfigured.
+- 5  **The Tomcat connector configured to listen on port 8080 failed to start. The port may already be in use or the connector may be misconfigured.**
 
-  出现该问题的原因是，在我们的电脑端运行了多个绑定在8080端口的程序，导致新建的进程无法绑定端口，进而倒是程序死掉，可以通过杀死绑定在8080端口的其他的进程。
+  ​	出现该问题的原因是，运行了多个绑定在8080端口的程序，导致新建的进程无法绑定端口，进而倒是程序死掉，可以通过杀死绑定在8080端口的其他的进程。
 
   ```shell
   netstat -ano | findstr "8080"		#查询绑定在8080端口的进程
@@ -104,4 +105,22 @@ description:
   taskkill /F /pid 8952				#强行杀死pid为8952的进程
   ```
 
-- 
+- 6  **Error:java: 无效的目标发行版: 11**
+
+  原工程的pom.xml文件中
+
+  ```java
+  	<properties>
+  		<java.version>11</java.version>
+  	</properties>
+  ```
+
+  将其修改下面的内容即可。
+
+  ```java
+  	<properties>
+  		<java.version>1.8</java.version>
+  	</properties>
+  ```
+
+- 7
