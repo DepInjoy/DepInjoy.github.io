@@ -151,3 +151,9 @@ Operation* SimpleFactoryDemo::createFactory(char op)
 ```
 
 在此基础上，如果我们希望添加平方和立方，只需要在此重写一个继承Operation的类，并实现getResult接，在createFactory类中新增一个switch即可。
+
+
+
+### 抽象工厂模式
+
+P140
