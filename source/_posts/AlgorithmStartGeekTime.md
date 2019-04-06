@@ -53,7 +53,7 @@ def flib(n)
 
 假设n为6，计算过程可以简化如下：
 
-![](E:\00_Project\code\00_blog\source\source\_img\斐波那契额数组递归实现时间复杂度.jpg)
+![](..\_img\斐波那契额数组递归实现时间复杂度.jpg)
 
 可见，斐波那契额数列的递归实现的时间复杂度为o(2^n)，虽然算法实现简单，但是其时间复杂度很高。这样也可以看出数据结构和算法对于算法的实现很重要。
 
@@ -61,13 +61,13 @@ def flib(n)
 
 ## 常见数据结构操作复杂度
 
-![](E:\00_Project\code\00_blog\source\source\_img\常见数据结构操作复杂度.jpg)
+![](..\_img\常见数据结构操作复杂度.jpg)
 
 ​                                                                            [图片来源](http://bigocheatsheet.com/)
 
 ## 常见排序算法复杂度
 
-![](E:\00_Project\code\00_blog\source\source\_img\常见排序算法复杂度.jpg)
+![](..\_img\常见排序算法复杂度.jpg)
 
 ​						   [图片来源](http://bigocheatsheet.com/)
 
@@ -509,6 +509,10 @@ public:
 
 ### Hash表
 
+![](..\_img\算法和数据结构\极客时间\哈希函数.png)
+
+![](..\_img\算法和数据结构\极客时间\Hash碰撞.png)
+
 ####  [有效的字母异位词](https://leetcode.com/problems/valid-anagram/description/)
 
 ```
@@ -574,6 +578,10 @@ public:
 
 
 #### [三个数之和](https://leetcode-cn.com/problems/3sum/)
+
+##### 推荐解法
+
+![](..\_img\算法和数据结构\极客时间\三个数和解法2.png)
 
 ```
 思路一：
@@ -650,3 +658,10 @@ public:
 };
 ```
 
+
+
+### 二叉搜索树
+
+![](..\_img\算法和数据结构\极客时间\二叉搜索树.png)
+
+#### []()
