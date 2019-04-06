@@ -470,10 +470,183 @@ public:
 
 #### [返回滑动窗口中的最大值](https://leetcode.com/problems/sliding-window-maximum/)
 
+```
+思路一：
+	利用MaxHeap，维护堆（加入新元素，删除旧元素）；将对顶元素加入队列
+思路二：
+	利用Queue，实现入队和队列维护。
+	把遍历Index的i视作每次窗口的最后一个index，而当windows中第一个数的index超出i窗口范围则弹出(队列存放index)。
+    滑动窗口最前方Index对应的数字一直是最大值，窗口内元素按递减排序；当检索下一个数时，对应把位于滑动窗口尾部Index对应的数字小于本数的Index弹出，保证队列数字顺序。
+    如果i到达窗口边界后，每次移动都输出对列头元素对应的数。
+```
+
+```C++
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        vector<int> res;
+        if(nums.size() < k || (k <= 0))
+            return res;
+        
+        deque<int> windows;
+        for(int i = 0;i < nums.size();i++){
+            if(!windows.empty() && i >= k && windows.front() <= i - k)
+                windows.pop_front();                
+            
+            while(!windows.empty() && nums[windows.back()] < nums[i])
+                windows.pop_back();
+            windows.push_back(i);
+            
+            if(i >= k - 1)
+                res.push_back(nums[windows.front()]);
+        }
+        return res;
+    }        
+};
+```
+
 
 
 ### Hash表
 
-####  [有效字母异位](https://leetcode.com/problems/valid-anagram/description/)
+####  [有效的字母异位词](https://leetcode.com/problems/valid-anagram/description/)
 
+```
+思路一：
+	将字符串按照字典序进行排序，最快的时快排，对应的时间复杂度为O(NlogN)。
+思路二：
+	利用Map进行字符数计数，判断两个map是否一致。对应的时间复杂度为O(N)。
+```
+
+```C++
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        unordered_map<char, int> hash4s;
+        unordered_map<char, int> hash4t;
+        for(int i = 0;i < s.size();i++){
+            hash4s[s[i]]++;
+        }  
+        for(int i = 0;i < t.size();i++){
+            hash4t[t[i]]++;
+        }
+        return hash4s == hash4t;
+    }
+};
+```
+
+
+
+#### [计算两数之和](https://leetcode-cn.com/problems/two-sum/)
+
+```
+思路一：
+	暴力求解：
+		执行两层for循环，对应的时间复杂度为O(N^2)
+思路二：
+	利用HashMap进行查找，假设求x+y=9,则y=9-x。对应的时间复杂度为O(N)。
+		for x (nums[0]->nums[len])			O(N)
+			map.find(9 - x)					O(1)
+```
+
+```C++
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        vector<int> res;
+        //创建HashMap
+        std::unordered_map<int, int> tmp;
+        for(int i = 0; i < nums.size();i++){
+            auto num1 = tmp.find(target - nums[i]);
+            //查找到符合条件的数据
+            if(num1 != tmp.end()){
+                res.push_back(i);
+                res.push_back(num1->second);
+            }
+            //将(数据，索引)添加入HashMap。
+           tmp[nums[i]] =  i;
+        }
+       return res; 
+    }
+};
+```
+
+
+
+#### [三个数之和](https://leetcode-cn.com/problems/3sum/)
+
+```
+思路一：
+	暴力求解，进行三个循环，对应的时间复杂度为O(N^3)
+思路二：
+	利用Set进行求解。
+	for x = (nums[0] -> nums[len])				O(N)
+	for y = (nums[0] -> nums[len])				O(N)
+	z = -(x+y),转化为求两数之和问题。	   	     	O(1)
+思路三：
+	sort-find求解，可以节省空间。
+	对nums进行排序，最快时快排。					O(NlogN)
+	for x = (nums[0] -> nums[len])				O(N)
+		y + z = sum - x;
+		y = nums[0], z = nums[len]
+		根据y+z的和移动y或者z		    		   O(N)
+```
+
+```C++
+ class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        vector<vector<int>> res;
+        if(nums.size() < 3)
+            return res;
+        
+        sort(nums.begin(), nums.end());
+        for(int i = 0;i < nums.size() - 2;i++){
+            //避免重复
+            if(i > 0 && nums[i] == nums[i - 1])
+                continue;
+            
+            int target = 0 - nums[i];
+#if 1
+            int low = i + 1;
+            int high = nums.size() - 1;
+            while(low < high){
+                if(nums[low] + nums[high] > target){
+                    high--;
+                }else if(nums[low] + nums[high] < target){
+                    low++;
+                }else{
+                    //查找到符合条件的
+                    vector<int> xyz;
+                    xyz.push_back(nums[i]);
+                    xyz.push_back(nums[low]);
+                    xyz.push_back(nums[high]);
+                    res.push_back(xyz);
+                    low++;
+                    //避免重复
+                    while(nums[low] == nums[low - 1] && low < high){
+                        low++;
+                    }
+                }
+            }
+#else
+            //缺少避免重复的方法
+            set<int> tmp;
+            for(int j = i + 1; j < nums.size();j++){
+                auto num = tmp.find(target - nums[j]);
+                if(num != tmp.end()){
+                    vector<int> xyz;
+                    xyz.push_back(nums[i]);
+                    xyz.push_back(nums[j]);
+                    xyz.push_back(*num);
+                    res.push_back(xyz);
+                }
+                tmp.insert(nums[j]);
+            }
+#endif
+        }
+        return res;
+    }
+};
+```
 
