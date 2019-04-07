@@ -664,4 +664,77 @@ public:
 
 ![](..\_img\算法和数据结构\极客时间\二叉搜索树.png)
 
-#### []()
+#### [二叉树的最近公共祖先](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-tree/)
+
+```C++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(root == NULL || root == p || root == q)
+            return root;
+        TreeNode* left = lowestCommonAncestor(root->left, p, q);
+        TreeNode* right = lowestCommonAncestor(root->right, p, q);
+        if(left == NULL){		//不在左子树，则在右子树
+            return right;
+        } else{					//存在在左子树
+            if(right == NULL) 	//不存在在右子树，则存在在左子树
+                return left;
+            else				//既存在在左子树也存在在右子树，则为root
+                return root;
+        }
+    }
+};
+```
+
+#### [二叉搜索树的最近公共祖先](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-search-tree/)
+
+```C++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(p->val < root->val && q->val < root->val)		//只存在于左子树
+            return lowestCommonAncestor(root->left, p, q);
+        else if(p->val > root->val && q->val > root->val)	//只存在于右子树
+            return lowestCommonAncestor(root->right, p, q);
+        else												//跨在两者之间，等于根节点
+            return root;
+    }
+};
+```
+
+### 递归和分治
+
+![](..\_img\算法和数据结构\极客时间\递归代码模板.png)
+
+
+
+![](..\_img\算法和数据结构\极客时间\分治模型展示1.png)
+
+
+
+![](..\_img\算法和数据结构\极客时间\分治模型展示.png)
+
+
+
+![](..\_img\算法和数据结构\极客时间\分治代码模板.png)
+
+
+
