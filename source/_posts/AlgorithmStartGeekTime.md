@@ -720,6 +720,8 @@ public:
 };
 ```
 
+
+
 ### 递归和分治
 
 ![](..\_img\算法和数据结构\极客时间\递归代码模板.png)
@@ -737,4 +739,64 @@ public:
 ![](..\_img\算法和数据结构\极客时间\分治代码模板.png)
 
 
+
+####  [Pow(x, n) ](https://leetcode-cn.com/problems/powx-n/)
+
+```
+思路一：
+	直接调用库函数,对应的时间复杂度为O(1).
+思路二：
+	暴力求解，循环N次乘.对应的时间复杂度为O(N).
+思路三：
+	分治,对应的时间复杂度为O(logN).
+	如果n为偶数，则m=x^(n/2),y= m*m
+	如果n为奇数，则m=x^(n/2),y= m*m*x。
+
+	x^n ----> x^(n/2) ----> x^(n/4) ......
+```
+
+```C++
+class Solution {
+public:
+    double myPow(double x, int n) {
+        if(n < 0){
+            x = 1 / x;
+            /*
+            	n = -2147483648,取反之后超出了int的范围，此时需要赋值为INT_MAX
+            	为了保持奇偶性，n = INT_MAX - 1
+            */
+            if(n <= -2147483648) n = INT_MAX - 1;
+            else n = -n;
+        }
+        if(n == 0) return 1;
+        if(n % 2)
+            return x * myPow(x*x, n/2);
+        else
+             return myPow(x*x, n/2);
+    }
+};
+```
+
+```C++
+class Solution {
+public:
+    double myPow(double x, int n) {
+        if(n < 0){
+            x = 1 / x;
+            if(n <= -2147483648) n = INT_MAX - 1;
+            else n = -n;
+        }
+        if(n == 0) return 1;
+        double y = 1;
+        while(n){
+            if(n % 2){
+                y = y * x;   
+            }
+            x *= x;
+            n = n / 2;
+        }
+        return y;
+    }
+};
+```
 
