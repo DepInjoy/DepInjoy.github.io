@@ -7,6 +7,10 @@ tags: [设计模式]
 description: 策略模式定义了算法家族并分别封装起来，让他们之间可以相互替换，此模式让算法的变化不会影响算法客户。
 ---
 
+- [图说设计模式](https://design-patterns.readthedocs.io/zh_CN/latest/index.html)
+
+
+
 ### 依赖倒转原则
 
 - what:抽象不应该依赖于细节，细节应该依赖于抽象
