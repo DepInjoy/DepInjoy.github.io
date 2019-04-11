@@ -15,3 +15,7 @@ description:
 
 [MDN HTTP Headers](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers)
 
+HTTP连接相关的参数设置，下图来自于《计算机网络管理技术》的219页。
+
+![](..\_img\TCP\HTTP连接相关参数设置.png)
+
