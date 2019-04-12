@@ -111,27 +111,10 @@ private:
 class Base
 {
 public:
-	~Base(){ std::cout << "Destruct Base" << std::endl; }
-};
-
-class Derived : public Base
-{
-public:
-	~Derived(){ std::cout << "Destruct Derived" << std::endl; }
-};
-int main(int argc, char*argv[])
-{
-	Base *d = new Derived();
-	delete d;							//Destruct Derived
-	return 0;
-}
-```
-
-```C++
-#include <iostream>
-class Base
-{
-public:
+    /*
+    	此处如果不添加virtual关键字，则派生类析构不会调用基类的析构函数。
+    	如果希望析构派生类时，希望调用基类的析构，则需要添加virtual关键字
+    */
 	virtual ~Base(){ std::cout << "Destruct Base" << std::endl; }
 };
 
