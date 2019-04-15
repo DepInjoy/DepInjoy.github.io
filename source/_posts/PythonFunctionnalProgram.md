@@ -1,0 +1,100 @@
+---
+layout: post
+title: Python从入门到深入：函数式编程
+date: 2019-4-15 15:00
+category: Python
+tags: [Python]
+description: 介绍Python的函数式编程，其中包含：	
+    1. 装饰器，其中给出带参数和不带参数的装饰器使用示例。
+---
+
+
+
+### 装饰器
+
+​	Python中函数也是一个对象，而且函数对象也可以赋值给变量，进而通过变量来调用函数。
+
+​	Python中每个函数都有一个```__name__```属性，通过该属性来获取到函数的名称。自定义一个log函数，利用装饰器来获取函数的调用时间和名称。
+
+
+
+#### 不带参数的装饰器
+
+首先，定义一个装饰器：
+
+```Python
+import time
+# 定义一个无参数传入的装饰器
+def log(func):
+    # wrapper支持任意参数输入的调用
+    def wrapper(*args, **kw):
+        # 获取当前的时间，之后将当前时间和函数名称打印出来
+        curTime = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
+        print("{0} Call {1} ".format(curTime, func.__name__))
+        # 调用原始函数
+        return func(*args, **kw)
+    return wrapper
+```
+
+​	上面的log函数接受一个函数输入，并返回一个函数。 我们使用时需要使用Python的@，把decorator置于函数的定义前面。首先，给出一个函数无参数输入的示例：
+
+```Python
+# 装饰器的使用，用@将decorator放在函数定义的前面
+@log
+def decoratorDemo():
+    print("Decorator Demo Test")
+
+# 执行函数
+'''
+2019-04-15 17:07:38 Call decoratorDemo 
+Decorator Demo Test 
+'''
+decoratorDemo()		#等价于log(decoratorDemo)
+```
+
+​	然后，给出一个存在参数输入的函数调用示例：
+
+```Python
+@log
+def decoratorDemo2(name):
+    print(name)
+
+'''
+2019-04-15 17:07:38 Call decoratorDemo2 
+Decorator Demo2 Test
+'''
+decoratorDemo2("Decorator Demo2 Test")
+```
+
+
+
+#### 带参数的装饰器
+
+装饰器定义：
+
+```Python
+import time
+import functools
+def log(param):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kw):
+            curTime = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
+            print("{0} Call {1} with {2}".format(curTime, func.__name__, param))
+            return func(*args, **kw)
+        return wrapper
+    return decorator
+```
+
+函数调用示例：
+
+```Python
+@log("input")
+def paramDemo():
+    return ("Param")
+'''
+2019-04-15 17:42:30 Call paramDemo with input
+'''
+paramDemo()
+```
+
