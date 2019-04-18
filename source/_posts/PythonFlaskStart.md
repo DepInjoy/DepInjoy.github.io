@@ -288,11 +288,159 @@ def getError():
     return 'Error'
 ```
 
+- 模板
 
+  ​	模板是一个包含响应文本的文件，它里面包含一些特殊的占位变量来表示动态部分，该占位变量代表的具体值，只在请求的上下文中可以知道，而用真实值替换占位变量，再返回得到的响应字符串的过程称之为渲染。Flask使用JinJa2模板引擎来进行渲染。
+
+  - 静态路由
+
+    ```Python
+    @app.route('/')
+    def index():
+    	return render_template('index.html')
+    ```
+
+    ```Html
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>欢迎</title>
+    </head>
+    <body>
+    <h1>Hello World！</h1>
+    </body>
+    </html>
+    ```
+
+  - 动态路由
+
+    ```Python
+    @app.route('/next/<info>')
+    def next(info):
+        '''
+    	左侧的info表示参数名，即模板中使用的占位符
+    	右侧的info表示当前作用域中的变量
+    	'''
+    	return render_template('info.html', info=info)
+    ```
+
+    ```HTML
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+    <body>
+        <h1>Next Page is opened with {{ info }} </h1>
+    </body>
+    </html>
+    ```
+
+    {{info}}是表示一种变量，是一种特殊的占位符，告诉模板引擎这个位置的值在渲染模板时使用的数据中获取。Jinja2支持多种数据结构。
+
+    - 字典
+
+      ```
+      {{myDict['key'] }}
+      ```
+
+    - 列表
+
+      ```Html
+      {{ myList[3] }}
+      {{ mylist[myintvar] }}
+      ```
+
+    - 对象
+
+      ```
+      {{ myobj.method() }}
+      ```
+
+    - [过滤器](http://jinja.pocoo.org/docs/2.10/templates/#filters)，修改变量的值。形式：```变量名 | 过滤器名```
+
+      ```
+      # 首字母大写字母显示
+      {{ name | capitalize}}
+      ```
+
+      |  过滤器名  | 说明                                                         |
+      | :--------: | :----------------------------------------------------------- |
+      |    safe    | 渲染时不转义，**不可用于不可信的值上，如用户在表单中的输入。** |
+      | capitalize | 将首字母转换为大写，其他字母小写                             |
+      |   title    | 将值中的每个单词的首字母都转换成大写                         |
+      |   lower    | 将值转换成小写                                               |
+      |   upper    | 将值转换成大写                                               |
+      |    trim    | 将值首位的空格去掉                                           |
+      | striptags  | 渲染前把值中的HTML标签全部去掉。                             |
+
+    - 控制结构
+
+      - if-else
+
+        ```Python
+        # 指定动态输入部分的数据格式
+        @app.route('/user/<int:id>')
+        def user(id):
+            return render_template('user_id.html', id=id)
+        ```
+
+        ```HTML
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <title>用户ID</title>
+        </head>
+        <body>
+        <h3>
+            {%  if id  %}
+                用户ID: {{ id }}
+            {%  else %}
+                用户不存在！
+            {% endif %}
+        </h3>
+        </body>
+        </html>
+        ```
+
+        - for循环
+
+        ```Python
+        @app.route('/users/')
+        def users():
+            ids = [1, 2, 3, 4, 5, 6, 7, 8]
+            return render_template('users_id.html', ids=ids)
+        ```
+
+        ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <title>用户信息展示</title>
+        </head>
+        <body>
+        <ul>
+            {% for id in ids %}
+                <li>{{ id }}</li>
+            {% endfor %}
+        </ul>
+        </body>
+        </html>
+        ```
+
+        - 宏
+
+          P43
+
+        - 模板继承
+
+          P43
 
 #### 扩展
-
-
 
 ##### Flask-script支持命令行选项
 
@@ -337,6 +485,80 @@ optional arguments:
   --ssl-key SSL_KEY     Path to ssl key
 
 ```
+
+
+
+##### Flask-Bootstrap集成Twitter Bootstrap
+
+[Bootstrap](https://getbootstrap.com/)是一个客户端框架，并不会涉及服务器，服务器需要做的是提供引用Bootstrap层叠样式表(CSS)和JavaScript文件的HTML响应，并在HTML、CSS和JS代码中实例化所需组件。
+
+安装
+
+```shell
+pip install flask-bootstrap
+```
+
+P46
+
+
+
+###### 自定义错误页面
+
+- 404错误
+
+```Python
+# 客户端请求位置页面或路由
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+```
+
+```
+{% extends "bootstrap/base.html" %}
+{%  block title %}
+    Flask with Bootstrap - page not found
+{% endblock %}
+{% block content %}
+    <div class="page-header">
+    <h1>Page Not Found </h1>
+    </div>
+{% endblock %}
+```
+
+- 500错误
+
+```Python
+# 处理异常显示
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('500.html'), 500
+```
+
+```html
+{% extends "bootstrap/base.html" %}
+{%  block title %}
+    Flask with Bootstrap - Internal Server Error
+{% endblock %}
+{% block page_content %}
+    <div class="page-header">
+    <h1> Internal Server Error </h1>
+    </div>
+{% endblock %}
+```
+
+
+
+###### 静态文件
+
+P50
+
+
+
+##### Flask-Moment本地化日期和时间
+
+P51
+
+
 
 
 
