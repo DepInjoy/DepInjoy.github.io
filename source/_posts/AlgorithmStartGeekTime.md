@@ -861,7 +861,7 @@ for(i = 2; i < n;i++)
 
 #### 替换策略
 
-##### LRU
+##### [LRU](https://leetcode-cn.com/problems/lru-cache/#/)
 
 ![](..\_img\算法和数据结构\极客时间\LRU.png)
 
