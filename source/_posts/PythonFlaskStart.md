@@ -7,6 +7,8 @@ tags: [Flask, Python, 服务器]
 description: 
 ---
 
+​	[C++服务器学习资源](https://cloud.tencent.com/developer/article/1078264)
+
 ​	首先，[Flask](http://flask.pocoo.org/)是一个可扩展的微服务器框架，它包含一个基本服务核心，其他的功能可以通过挑选任意符合项目需求的扩展来实现，这和大型框架不同，大型框架往往已经替开发者做出了大多数的选择，很多时候难以有替换方案。Flask主要有两个依赖：
 
 - 路由、调试和Web服务器网关接口（Web Server Gateway Interface，WSGI）子系统由[Werkzeug](https://palletsprojects.com/p/werkzeug/)提供。
