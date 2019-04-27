@@ -11,7 +11,29 @@ description:
 
 ### 懒汉模式
 
-​	也称延迟初始化，在单例即将使用时才进行初始化。由于线程锁是一个十分好事的操作，因而只在不要的时候进行加锁，来保证线程的安全性。该方式显示存在内存泄漏的风险，可以通过两种方式来解决该问题：
+​	也称延迟初始化，在单例即将使用时才进行初始化。
+
+```C++
+class Singleton{
+public:
+	static Singleton* getInstance(){
+		if (!Singleton::_instance){
+			if (!Singleton::_instance){
+				Singleton::_instance = new Singleton();
+			}
+		}
+		return Singleton::_instance;
+	}
+private:
+    //禁止copy和
+    Singleton(const Singleton& );
+    Singleton& operator=(const Singleton& );
+	static Singleton* _instance;
+};
+Singleton* Singleton::_instance = NULL;
+```
+
+​	上述实现对于多线程是不安全的，且线程锁是一个十分耗时的操作，因而只在不要的时候进行加锁，来保证线程的安全性。该方式显示存在内存泄漏的风险，可以通过两种方式来解决该问题：
 
 1. 使用智能指针
 2. 使用静态的嵌套类对象
