@@ -57,7 +57,7 @@ public:
 		return Singleton::_instance;
 	}
 private:
-    //禁止copy和
+    //禁止copy
     Singleton(const Singleton& );
     Singleton& operator=(const Singleton& );
 	static Singleton* _instance;
@@ -87,6 +87,11 @@ public:
 	}
 private:
 	static Singleton* _instance;
+    
+    ~Singleton(){
+		std::cout << "Singleton::~Singleton" << std::endl;
+	}
+    
 	class Deleter{
 	public:
 		~Deleter(){
@@ -99,6 +104,7 @@ private:
 	static Deleter _deleter;
 };
 Singleton* Singleton::_instance = NULL;
+Singleton::Deleter Singleton::_deleter;				//初始化_deleter
 ```
 
 
