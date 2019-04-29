@@ -9,7 +9,7 @@ description: 介绍一些C语言基础知识。
     2、运算符优先级
 ---
 
-
+[内联函数 (C++)Inline Functions](https://docs.microsoft.com/zh-cn/cpp/cpp/inline-functions-cpp?view=vs-2015) 
 
 ​	C++语言属于静态数据类型语言，在编译时进行数据类型检查，在编译时就必须知道数据的类型。可以在运行时通过typeid运算符返回的type_info类型的对象。
 
