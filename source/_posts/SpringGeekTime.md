@@ -68,6 +68,18 @@ description:
 
 #### 单数据源配置
 
+##### H2数据库
+
+添加依赖：
+
+```Java
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+```
+
 
 
 #### 多数据源配置
