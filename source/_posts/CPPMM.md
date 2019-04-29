@@ -1,13 +1,21 @@
 ---
 layout: post
-title: C++内存申请、释放以及管理
+title: C++内存管理和动态分配
 date: 2017-3-16 18:04
 category: CPP
 tags: [CPP]
 description: 本文主要描述C++中内存的申请、释放的方法。
-​	1、new和malloc的区别
+	1、new和malloc的区别
+	2、static变量实现的机理。
+---
 
-​	2、static变量实现的机理。
+
+
+我们程序中的变量存储于：
+
+- **静态内存。如局部的static对象，类的static对象，以及函数外的变量。**
+- **栈：函数内的非static对象。**
+- **堆：动态分配的对象。**对于动态分配的对象，如果未及时释放会造成内存泄漏，而在尚有指针引用内存时便释放了该内存，会引起非法内存指针问题。
 
 
 
@@ -241,3 +249,82 @@ int main(int argc, char* argv[])
 	return 0;
 }
 ```
+
+
+
+#### 智能指针
+
+​	为了更安全地使用动态内存，C++新标准引入了智能指针。智能指针也是一种模板，存在两种管理底层指针的方式：
+
+- **shared_ptr：允许多个指针指向同一个对象。**
+- **unique_ptr：“独占”锁指向的对象。** 
+
+#### shared_ptr
+
+- shared_ptr对象托管一个new运算符返回的指针，之后无须关心内存释放问题。
+- 当多个shared_ptr对象托管一个指针时，系统会维护一个计数器，当无shared_ptr托管该指针（shared_ptr计数器变为0）时，便会delete该指针.
+- shared_ptr不能托管指向动态分配的数组指针，否则程序会出错。
+
+```C++
+#include <memory>
+#include <iostream>
+using namespace std;
+class A
+{
+public:
+	int n = 0;
+	A(int a){ n = a; };
+	~A(){ cout << "Destruct A" << endl; };
+};
+
+int main(int argc, char* agv[])
+{
+	//sp1, sp2, sp3都托管A(6)
+	shared_ptr<A> sp1(new A(6));	
+	shared_ptr<A> sp2(sp1);
+	shared_ptr<A> sp3 = sp2;
+	cout << sp1->n << " " << sp2->n << " " << sp3->n << endl;		//6 6 6
+	A* tmp = sp1.get();
+	cout << tmp->n << endl;
+
+	sp1.reset();		//sp1放弃托管A(6)
+	if (!sp1) cout << "sp1 = NULL" << endl;
+
+	A* tmp2 = new A(8);
+	sp1.reset(tmp2);	//sp1托管A(8)
+	cout << sp1->n << endl;										//8
+	return 0;
+}
+```
+
+**测试用例一：**
+
+```C++
+上面的程序在程序终止时，自动调用A的析构函数
+```
+
+**测试用例二**
+
+```C++
+//sp2、sp3都放弃托管，此时指针无托管，调用析构，释放资源
+sp2.reset();
+sp3.reset();
+```
+
+
+```C++
+A * a = new A(6);
+shared_ptr<A> sp1(a);
+#if 1
+	//该操作并不增加shared_ptr对指针的托管，程序由于两次释放A导致crash
+	shared_ptr<A> sp2;
+	sp2.reset(a);
+	std::cout << sp2.use_count() << std::endl;		//1
+#else
+	//该操作shared_ptr的计数器增加，避免了两次释放A导致crash问题
+	shared_ptr<A> sp2(sp1);
+	std::cout << sp2.use_count() << std::endl;		//2
+#endif
+	
+```
+

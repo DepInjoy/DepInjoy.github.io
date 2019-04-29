@@ -148,7 +148,7 @@ sp3.reset();
 
 ```C++
 	A * a = new A(6);
-	shared_ptr<A> sp1(a);
+	<A> sp1(a);
 	//该操作并不增加shared_ptr对指针的托管，程序由于两次释放A导致crash
 	shared_ptr<A> sp2;
 	sp2.reset(a);
