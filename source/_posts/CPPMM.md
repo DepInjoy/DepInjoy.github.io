@@ -3,19 +3,80 @@ layout: post
 title: C++内存管理和动态分配
 date: 2017-3-16 18:04
 category: CPP
-tags: [CPP]
+tags: [CPP, C]
 description: 本文主要描述C++中内存的申请、释放的方法。
 	1、new和malloc的区别
 	2、static变量实现的机理。
+	3、智能指针
 ---
 
 
 
 我们程序中的变量存储于：
 
-- **静态内存。如局部的static对象，类的static对象，以及函数外的变量。**
+- **静态内存。如局部的static对象，类的static对象以及函数外的变量。**
 - **栈：函数内的非static对象。**
 - **堆：动态分配的对象。**对于动态分配的对象，如果未及时释放会造成内存泄漏，而在尚有指针引用内存时便释放了该内存，会引起非法内存指针问题。
+
+
+
+### 静态变量
+
+​	static修饰的变量是静态全局变量，在C++中静态变量不属于任何的类，只是在某个类中进行声明，被所有的类共享。**局部静态对象在程序第一次经过该对象定义语句时进行初始化，知道程序终止才被销毁**，在次期间，即使对象所在函数执行结束也不会对其有影响。
+
+#### 实际应用
+
+##### 实现一个消息分级提示系统
+
+[消息的分级提示](https://github.com/DepInjoy/BaseHouse/blob/master/Qt/GradedMessagePrompt/src/Bubble.cpp)实现在窗口的右下角显示进行消息的提示。该功能中每次弹出新消息需要知道上一个提示窗的y，通过定义一个静态变量
+
+```C++
+static int totalHeight;         //记录当前窗口相对于第一个窗口的高度信息
+```
+
+该变量虽在Bubble中定义却从不属于任何一个Bubble。
+static变量需要在类外进行初始化
+
+```
+int Bubble::totalHeight = 0;
+```
+
+
+
+##### 保存一个全局变量来便于其他模块调用
+
+​	下面的这个示例正是利用这个特性实现全局变量的保存。
+
+```C
+#ifndef __DICHTOMY_H_
+#define __DICHTOMY_H_
+#include <stdint.h>
+
+struct data{
+    uint8_t areaid;
+    uint8_t menuid;
+};
+
+struct data * get_data(void){
+   static struct data  m_data;
+   return &m_data;
+}
+```
+
+```C
+#include <stdlib.h>
+#include <stdio.h>
+#include "dichtomy.h"
+int main(int argc, char *argv[])
+{
+    struct data * test = get_data();
+    printf("1 : %d %d \n", test->areaid,test->menuid);		//1 : 0 0
+    test->areaid = 100;
+    test->menuid = 180;
+    struct data * test2 = get_data();
+    printf("2 : %d %d \n", test2->areaid, test2->menuid);	//2 ： 100 180
+}
+```
 
 
 
@@ -120,8 +181,7 @@ description: 本文主要描述C++中内存的申请、释放的方法。
 ```C++
 #include <iostream>
 using namespace std;
-class A
-{
+class A{
 public:
 	A();
 	~A();
@@ -131,70 +191,78 @@ public:
 	void operator delete[](void*p);
 };
 
-A::A()
-{	
+A::A(){
 	cout << "Construct A " << endl;
 }
 
-A::~A()
-{
+A::~A(){
 	cout << "Deconstruct A " << endl;
 }
 
-void* A::operator new(size_t size)
-{
+void* A::operator new(size_t size){
 	cout << "A::new " << size << " memmory " << endl;
 	return malloc(size);
 }
 
-void* A::operator new[](size_t size)
-{
+void* A::operator new[](size_t size){
 	cout << "A:new[] " << size << " memmory " << endl;
 	return operator new(size);
 }
 
-void A::operator delete(void* p)
-{
+void A::operator delete(void* p){
 	cout << "delete " << endl;
 	free(p);
 }
 
-void A::operator delete[](void* p)
-{
+void A::operator delete[](void* p){
 	cout << "delete[] " << endl;
 	operator delete(p);
 }
-int main(int argc, char* argv[])
-{
-	/*
-    	A::new 1 memmory 
-    	Construct A 
-    	Deconstruct A 
-    	Free memmory
-        ---------------------------------
-        A:new[] 6 memmory 
-        A::new 6 memmory
-        Construct A
-        Construct A
-        Deconstruct A
-        Deconstruct A
-        delete[] 
-        delete 
-        ---------------------------------
-    */
+
+int main(int argc, char* argv[]){
+/*
+	A::new 1 memmory
+	Construct A
+	Deconstruct A
+	Free memmory
+*/
 	A* tmp = new A();
 	delete tmp;
 	cout << "---------------------------------" << endl;
-	
+/*
+	A:new[] 6 memmory
+	A::new 6 memmory
+	Construct A
+	Construct A
+	Deconstruct A
+	Deconstruct A
+	delete[]
+	delete
+*/
 	A* tmp0 = new A[2];
 	delete[] tmp0;
 	cout << "---------------------------------" << endl;
-	
-    int* i = new int;
+
+	int* i = new int;
 	delete i;
+	system("pause");
 	return 0;
 }
 ```
+
+sizeof是面试的一个常用考点 
+
+- 上述的```class A```是一个空类型，不包含任何的成员变量和成员函数，该类型的```sizeof```是多少？
+
+  > 1,空类型不包含任何的信息，但是我们在声明时，注定会占用一定的空间，否则无法使用，至于具体占用多少由编译器决定，在VS中，每个孔示例类型占用1字节空间。
+
+- 添加构造和析构函数，再对其取```sizeof```,结果是多少？
+
+  > 1,构造和析构函数只需要知道函数的地址即可，而这些函数的地址只与类型相关，与实例无关，编译器不会对因为这两个函数而在实例内添加任何额外的信息。
+
+- 若将析构函数标记为虚函数，再对其取```sizeof```,结果是多少？
+
+  > 4或8,C++编译器一旦发现类中有虚函数，便会在该类型中生成一个虚函数表，并在该类型的每个实例中添加一个指向虚函数表的指针。在32位机器上，一个指针4个字节，取sizeof得到4；而在64位机器上，一个指针8个字节，取sizeof得到8。
 
 ###### 重载为友元函数
 

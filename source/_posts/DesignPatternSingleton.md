@@ -4,10 +4,10 @@ title: 设计模式：单例
 date: 2019-4-27 20:04
 category:设计模式
 tags: [设计模式]
-description:
+description:介绍了单例模式的集中实现方式。
 ---
 
-
+​	单例对象的类必须保证只有一个实例存在。实现单例的类能返回对象一个引用和获得该实例的静态方法。同时我们通过将该类的构造函数定义为私有方法，这样其他的代码就无法通过调用该类的构造函数来实例化该类的对象，只有通过该类提供的静态方法来得到该类的唯一实例。
 
 ### 懒汉模式
 
@@ -25,7 +25,7 @@ public:
 		return Singleton::_instance;
 	}
 private:
-    //禁止copy和
+    //禁止copy
     Singleton(const Singleton& );
     Singleton& operator=(const Singleton& );
 	static Singleton* _instance;
@@ -104,7 +104,7 @@ private:
 	static Deleter _deleter;
 };
 Singleton* Singleton::_instance = NULL;
-Singleton::Deleter Singleton::_deleter;				//初始化_deleter
+Singleton::Deleter Singleton::_deleter;				//初始化_deleter，必须
 ```
 
 
