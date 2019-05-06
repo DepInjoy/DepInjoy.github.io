@@ -239,13 +239,147 @@ public:
 };
 ```
 
+实现：
+
+```C++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+       if(!head || (head && !head->next))
+           return head;
+        
+        ListNode* low = head;
+        ListNode* fast = head->next;
+        ListNode* pre = NULL;
+        head = head->next;
+        while(low && fast){
+            ListNode* tmp = fast->next;
+            fast->next = low;
+            low->next = tmp;
+            if(pre) pre->next = fast;
+            //注意：low和fast被交换
+            pre = low;
+            low = tmp;
+            fast = (tmp ? tmp->next : NULL);
+        }
+        return head; 
+    }
+};
+```
+
+#### [环形链表](https://leetcode-cn.com/problems/linked-list-cycle-ii/submissions/)
+
+利用hash表，用空间换时间，复杂度为O(NlogN),空间复杂度为O(N)。
+
+```C++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        if(!head || !head->next) return NULL;
+        ListNode* node = head;
+        std::unordered_set<ListNode*> set;
+        while(node && node->next){
+            set.insert(node);
+            auto res = set.find(node->next);
+            if(res != set.end())
+                return *res;
+            node = node->next;
+        }
+        return NULL;
+    }
+};
+```
 
 
-#### [环形链表](https://leetcode.com/problems/linked-list-cycle-ii/)
 
+```C++
+class Solution {
+public:
+    
+    ListNode *detectCycle(ListNode *head) {
+        if(!head || !head->next) return NULL;
+        
+        ListNode* low = head;
+        ListNode* fast = head;
+        bool hasCycle = false;
+        while(low && low->next && fast && fast->next){
+            low = low->next;
+            fast = fast->next->next;
+            if(low == fast){
+                hasCycle = true;
+                break;
+            }
+        }  
+        if(!hasCycle) return NULL;
 
+        low = head;
+        while(low != fast){
+            low = low->next;
+            fast = fast->next;
+        }
+        return low;
+    }
+};
+```
 
-#### [每k个节点一组翻转链表](https://leetcode.com/problems/reverse-nodes-in-k-group/)
+#### [每k个节点一组翻转链表](https://leetcode-cn.com/problems/reverse-nodes-in-k-group/)
+
+```
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        if(!head || k <= 0) return head;
+        
+        std::stack<ListNode*> container;
+        ListNode* pre = NULL;
+        ListNode* cur = head;
+        while((container.size() < k) && cur){
+            container.push(cur);  
+            if(container.size() == k){
+                while(!container.empty()){
+                    if(!pre){
+                        pre = container.top();
+                    }else{
+                        pre->next = container.top();
+                    } 
+                    container.pop();
+                    std::cout << container.size() << std::endl;
+                }
+                pre->next = cur->next;
+            }
+            cur = cur->next;
+        }
+        
+        if(!pre)
+            return head;
+        return pre;
+    }
+};
+```
 
 
 

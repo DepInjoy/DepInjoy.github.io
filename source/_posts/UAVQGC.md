@@ -2,7 +2,7 @@
 layout: post
 title: QGroundControl介绍
 date: 2019-1-20 20:43
-category: 地面站
+category: 无人机
 tags: [无人机]
 description:
 ---

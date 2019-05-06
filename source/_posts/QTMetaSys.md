@@ -117,7 +117,7 @@ Connections{
 
 - 信号与方法连接
 
-```qml
+```C++
     Rectangle {
         id: rect
         anchors.fill:           parent

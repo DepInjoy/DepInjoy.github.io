@@ -3,7 +3,7 @@ layout: post
 title: C++内存管理和动态分配
 date: 2017-3-16 18:04
 category: CPP
-tags: [CPP, C]
+tags: [CPP]
 description: 本文主要描述C++中内存的申请、释放的方法。
 	1、new和malloc的区别
 	2、static变量实现的机理。
@@ -31,36 +31,24 @@ description: 本文主要描述C++中内存的申请、释放的方法。
 [消息的分级提示](https://github.com/DepInjoy/BaseHouse/blob/master/Qt/GradedMessagePrompt/src/Bubble.cpp)实现在窗口的右下角显示进行消息的提示。该功能中每次弹出新消息需要知道上一个提示窗的y，通过定义一个静态变量
 
 ```C++
-static int totalHeight;         //记录当前窗口相对于第一个窗口的高度信息
+
 ```
 
 该变量虽在Bubble中定义却从不属于任何一个Bubble。
 static变量需要在类外进行初始化
 
 ```
-int Bubble::totalHeight = 0;
+
 ```
 
 
 
 ##### 保存一个全局变量来便于其他模块调用
 
-​	下面的这个示例正是利用这个特性实现全局变量的保存。
+下面的这个示例正是利用这个特性实现全局变量的保存。
 
 ```C
-#ifndef __DICHTOMY_H_
-#define __DICHTOMY_H_
-#include <stdint.h>
 
-struct data{
-    uint8_t areaid;
-    uint8_t menuid;
-};
-
-struct data * get_data(void){
-   static struct data  m_data;
-   return &m_data;
-}
 ```
 
 ```C
