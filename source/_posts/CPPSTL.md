@@ -165,7 +165,7 @@ int main()
 
 ##### queue
 
-​	先进先出，删除、查找和修改项只能在头部进行。和stack一样，它也可以使用list、dequeue来实现，缺省用dequeue实现。
+​	先进先出，删除、查找和修改项只能在头部进行。和stack一样，它也可以使用list、dequeue来实现，缺省用deque实现。
 
 | 操作 |       意义       |
 | :--: | :--------------: |
@@ -306,7 +306,7 @@ int main(int argc, char* argv[])
 |      容器      | 迭代器类别 | 数据结构     | 操作时间复杂度[插入、查询、删除] |                           支持算法                           |
 | :------------: | :--------: | ------------ | :------------------------------: | :----------------------------------------------------------: |
 |     vector     |  随机访问  | 动态扩容数组 |         O(N)，O(1),O(N)          |                                                              |
-|    dequeue     |  随机访问  | 双向队列     |                                  | 所有适合于vector的都适用于dequeue，另外支持push_front和pop_front。 |
+|     deque      |  随机访问  | 双向队列     |                                  | 所有适合于vector的都适用于deque，另外支持push_front和pop_front。 |
 |      list      |    双向    | 双向链表     |                                  |                                                              |
 |  multiset/set  |    双向    |              |                                  | find(x>y&&y>x即为相等)，lower_bound，upper_bound，equal_range，count，insert。 |
 |  multimap/map  |    双向    | 红黑树       |                                  |                                                              |

@@ -96,7 +96,7 @@ int main()
 ​	shared_ptr对象托管一个new运算符返回的指针，之后无须关心内存释放问题。
 
 - 当多个shared_ptr对象托管一个指针时，系统会维护一个计数器，当无shared_ptr托管该指针时，便会delete该指针.
-- shared_ptr不能托管指向动态分配的数组指针，否则程序娙会出错。
+- shared_ptr不能托管指向动态分配的数组指针，否则程序会出错。
 
 ```C++
 #include <memory>

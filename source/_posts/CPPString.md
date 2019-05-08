@@ -179,7 +179,7 @@ swap函数实现交换。
   -  从字符串index索引开始查找中最后一个与str中的任意字符匹配的字符，返回它的位置。如果没找到就返回string::npos(-1)。
 
     ```C++
-    size_type find_last_of( const basic_string &str, size_type index = npos );   size_type find_last_of( const char *str, size_type index = npos );
+  size_type find_last_of( const basic_string &str, size_type index = npos );   size_type find_last_of( const char *str, size_type index = npos );
     ```
 
     示例：
