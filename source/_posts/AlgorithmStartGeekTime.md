@@ -89,69 +89,14 @@ def flib(n)
   - [小/大顶堆 Min/Max Heap](https://en.wikipedia.org/wiki/Min-max_heap)
 - 二叉搜索树
 
-#### [返回输入流中第K大的元素](https://leetcode-cn.com/problems/kth-largest-element-in-a-stream/)
 
-```
-思路一：
-	保存K个最大值，然后对这K个元素进行排序（快排最快），对应的时间复杂度为N*KlogK。
-思路二：
-	利用优先队列的Min Heap，且该Min Heap的size为K。对应的时间复杂度为N*（1或logK）即N*logK。
-	[ 4,5,8,2,3,9,1]
-	[4,5,8]
-	   [4,5,8]
-	   	  [4,5,8]			  O[1]
-	   	  	 [5,8,9]		  O[log(K)]     
-	   	  	 	[5,8,9]
-```
-
-```C++
-class KthLargest {
-public:
-    
-    KthLargest(int k, vector<int> nums){
-        size = k;
-        for(auto val = nums.begin();val < nums.end();val++){
-            if(minHeap.size() < k){
-                minHeap.push(*val);
-            }else{
-                if(minHeap.top() < *val){
-                    minHeap.pop();
-                    minHeap.push(*val);
-                }
-            }
-        }
-    }
-    
-    int add(int val) {
-        if(minHeap.size() < size){
-            minHeap.push(val);
-        }else{
-            if(minHeap.top() < val){
-                if(!minHeap.empty()) minHeap.pop();
-                minHeap.push(val);
-            }
-        }
-        return minHeap.top();
-    }
-    
-    private:
-        priority_queue<int, deque<int>, greater<int>> minHeap;
-        int size;
-};
-```
 
 
 
 #### [返回滑动窗口中的最大值](https://leetcode.com/problems/sliding-window-maximum/)
 
 ```
-思路一：
-	利用MaxHeap，维护堆（加入新元素，删除旧元素）；将对顶元素加入队列
-思路二：
-	利用Queue，实现入队和队列维护。
-	把遍历Index的i视作每次窗口的最后一个index，而当windows中第一个数的index超出i窗口范围则弹出(队列存放index)。
-    滑动窗口最前方Index对应的数字一直是最大值，窗口内元素按递减排序；当检索下一个数时，对应把位于滑动窗口尾部Index对应的数字小于本数的Index弹出，保证队列数字顺序。
-    如果i到达窗口边界后，每次移动都输出对列头元素对应的数。
+
 ```
 
 ```C++
