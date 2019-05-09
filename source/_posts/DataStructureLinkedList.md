@@ -174,3 +174,19 @@ NULL				//特殊情况，直接返回
 - 元素数目为奇数
 
 [LeetCode实现代码](https://github.com/DepInjoy/BaseHouse/blob/master/Interview/%E9%93%BE%E8%A1%A8/%E9%93%BE%E8%A1%A8%E7%9B%B8%E9%82%BB%E5%85%83%E7%B4%A0%E4%BA%A4%E6%8D%A2.cpp)
+
+
+
+#### [两数相加](https://leetcode-cn.com/problems/add-two-numbers/)
+
+**实现思路**：将头指针进行相加，作为当前的数值和上一位的进位当做当前结点的数值，如果当前节点不存在则取值为0。
+
+**特殊情况**：
+
+- 输入存在空指针
+- 最后两个数字相加产生进位，如 5 + 5 = 0 -> 1
+
+[LeetCode C++实现代码](https://github.com/DepInjoy/BaseHouse/blob/master/Interview/%E9%93%BE%E8%A1%A8/%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C.cpp)
+
+
+
