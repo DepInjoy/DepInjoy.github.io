@@ -438,3 +438,142 @@ float d = 3.14;
 print(std::cout, a, b, c, d);			//6, 18, Hello, 3.14
 ```
 
+
+
+### 函数返回值
+
+​	函数返回值有如下注意事项和性质：
+
+- 不要返回局部的对象的指针或者引用。
+
+- **函数的返回值是引用、指针或者类对象，可以使用函数调用结果访问结果对象成员。**这是由于调用运算符的优先级和点/箭头运算符的优先级相同且符合结合律。
+
+  ```C++
+  #include <iostream>
+  #include <string>
+  
+  std::string& shortString(std::string& str1, std::string& str2)
+  {
+  	return (str1.size() <= str2.size()) ? str1 : str2;
+  }
+  int main(void)
+  {
+  	std::string tmp1("Hello")， tmp2("Word");
+  	std::cout << shortString(tmp1, tmp2).size() << std::endl;
+  	return 0;
+  }
+  ```
+
+- 函数的返回类型决定了函数调用是左值或者右值，调用一个返回引用的函数得到左值，否则得到右值。
+
+  ```C++
+  #include <iostream>
+  #include <string>
+  //返回引用，左值
+  char& getChar(std::string& str, const std::size_t index)
+  {
+  	return str[index];
+  }
+  
+  int main(void)
+  {
+  	std::string tmp("Hello");
+  	getChar(tmp, 0) = 'S';
+  	std::cout << tmp << std::endl;				//Sello
+  	return 0;
+  }
+  ```
+
+
+#### （一）无返回值
+
+​	常见的无返回值的函数的返回值为void。
+
+
+
+#### （二）返回一个值
+
+​	和函数初始化变量或形参一样，**返回的值用于初始化调用调用点的一个临时量，该临时量就是函数的返回值。**
+
+
+
+#### （三）返回引用
+
+​	**函数返回引用，该引用是它所引用对象的一个别名。**
+
+
+
+#### （四）列表初始化返回值
+
+​	**C++11新标准规定，函数可以返回{}包围的列表。**此处返回的列表可以用来表示函数返回的临时量进行初始化，如果返回值为空，则临时量执行值初始化，否则返回值由函数的返回值决定。
+
+```C++
+std::vector<std::string>& shortString(std::string& str1, std::string& str2)
+{
+	return{ "Hello", "World", "Nice", "to", "meet", "you" };
+}
+```
+
+
+
+#### （五）返回一个数组指针
+
+​	由于数组不能执行拷贝，所以函数不可以返回数组，可以返回数组的指针或者引用。
+
+#####  返回数组指针
+
+```C++
+//解引用func调用得到大小为10的数组
+int(*func(void))[10]
+```
+
+````C++
+#include <iostream>
+#include <ctime>
+int(*array(void))[10]
+{
+	static int a[10] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+	srand((unsigned)time(NULL));
+	for (int i = 0; i < 10; ++i)
+		a[i] = rand();
+	return &a;
+}
+
+int main(void)
+{
+	int * tmp = *(array());
+	for (int i = 0; i < 10; i++)
+		std::cout << tmp[i] << " ";
+	return 0;
+}
+````
+
+
+
+##### 使用类型别名
+
+```C++
+//返回指向10个整数的数组指针
+using arrT = int[10];
+arrT* array(void)
+```
+
+
+
+##### 使用后置类型
+
+​	**C++11新标准规定，任何函数定义都可以使用尾置返回**，这种形式对于函数返值值复杂的更适用。
+
+```C++
+auto array(void) -> int(*)[10]
+```
+
+##### 使用decltype
+
+```C++
+int g[10] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+decltype(g) *array(void)
+```
+
+
+
