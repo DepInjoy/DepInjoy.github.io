@@ -34,6 +34,12 @@ C++语言优势：
   1. 面向对象的思想：继承、多态、标准类库。
   2. 泛型编程思想：模板机制和标准模板库STL。
 
+[算术运算符](http://www.cplusplus.com/doc/tutorial/operators/)
+
+[前缀/后缀递增/减运算符](https://en.cppreference.com/w/cpp/language/operator_incdec)
+
+[数组Array](https://www.tutorialspoint.com/cplusplus/cpp_arrays.htm)
+
 #### x++和++x、x--和--x的区别
 
 x++是先对x执行运算，再对x自增1，++x是先对x自增1，再对x执行运算。同样地，x--是先对x执行运算，再对x自减1，--x是先对x自减1，再对x执行运算。

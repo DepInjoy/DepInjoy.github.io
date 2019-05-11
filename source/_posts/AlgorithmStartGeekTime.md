@@ -79,51 +79,6 @@ def flib(n)
 | 单链表 | o(N) | o(1) | o(1) |
 | 双链表 | o(N) | o(1) | o(1) |
 
-### 堆栈和队列
-
-### 优先队列
-
-正常进入，按照优先级取出，它的实现机制：
-
-- [Heap](https://en.wikipedia.org/wiki/Heap_(data_structure)) (Binary, Binomial, Fibonacci)
-  - [小/大顶堆 Min/Max Heap](https://en.wikipedia.org/wiki/Min-max_heap)
-- 二叉搜索树
-
-
-
-
-
-#### [返回滑动窗口中的最大值](https://leetcode.com/problems/sliding-window-maximum/)
-
-```
-
-```
-
-```C++
-class Solution {
-public:
-    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
-        vector<int> res;
-        if(nums.size() < k || (k <= 0))
-            return res;
-        
-        deque<int> windows;
-        for(int i = 0;i < nums.size();i++){
-            if(!windows.empty() && i >= k && windows.front() <= i - k)
-                windows.pop_front();                
-            
-            while(!windows.empty() && nums[windows.back()] < nums[i])
-                windows.pop_back();
-            windows.push_back(i);
-            
-            if(i >= k - 1)
-                res.push_back(nums[windows.front()]);
-        }
-        return res;
-    }        
-};
-```
-
 
 
 ### Hash表
@@ -212,7 +167,7 @@ public:
 	z = -(x+y),转化为求两数之和问题。	   	     	O(1)
 思路三：
 	sort-find求解，可以节省空间。
-	对nums进行排序，最快时快排。					O(NlogN)
+	对nums进行排序，最快是快排。					O(NlogN)
 	for x = (nums[0] -> nums[len])				O(N)
 		y + z = sum - x;
 		y = nums[0], z = nums[len]
