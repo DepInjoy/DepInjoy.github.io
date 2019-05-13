@@ -58,7 +58,7 @@ int main(int argc,char *argv[])
 }        
 ```
 
-编译动态库：```gcc stime.c -o libstime.so -shared -fPIC``
+编译动态库：``gcc stime.c -o libstime.so -shared -fPIC``·
 
 编译可执行文件：```gcc link.c -L./ -lstime -o link```
 
@@ -105,10 +105,7 @@ int main(int argc,char *argv[])
 #include <dlfcn.h>
 #include <sys/stat.h>
 #include <setjmp.h>
-#include "log/log.h"
-#include "file/file.h"
 #include "math/stime.h"
-#include "math/ch_parity.h"
 
 #define SHARE_PATH "./lib/libshare.so"
 

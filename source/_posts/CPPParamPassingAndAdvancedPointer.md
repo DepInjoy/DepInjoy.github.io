@@ -213,9 +213,17 @@ Address                 Value
 
 ```C++
 //下面的三种形式是等价的
-void print(const int *);
-void print(const int[]);
-void print(const int[10]);	//数组维度代表期望包含的元素数，实际上未必
+void print(const int *， int size);		//将指针当做一个指针传递
+void print(const int[]， int size);		//传递一个未指定大小的数组
+void print(const int[10]， int size);	//数组维度代表期望包含的元素数，实际上未必
+
+//使用示例
+void print(const int *array, int size)
+{
+    for(int i=0; i<size; i++) 
+        std::cout<<array[i]<<" ";
+    std::cout<<"\n";
+}
 ```
 
 ​	管理指针形参有三种形式：

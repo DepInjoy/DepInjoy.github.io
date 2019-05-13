@@ -3,7 +3,7 @@ layout: post
 title: const修饰符
 date: 2017-3-16 18:04
 category: CPP
-tags: [CPP，C]
+tags: [CPP]
 description: 对于const变量，C++编译器在编译期间会将用到该变量的地方替换为对应的数值，并引入常量折叠的概念。
 ---
 
