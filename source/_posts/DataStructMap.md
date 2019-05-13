@@ -9,6 +9,36 @@ description:
 
 
 
+### 无序容器
+
+​	**无序容器是C++11的新特性，对应的数据结构是哈希表，其特点是查找效率高**，查找的时间复杂度为O(1)，而额外空间复杂度则要高出很多，因此无序容器在需要高效率查询时，可以使用unordered_map容器，如果堆内存大小敏感或堆数据存储要求有序时，则可以考虑使用map容器。
+
+```C++
+#include <iostream>
+#include <unordered_map>
+#include <string>
+
+int main(int argc, char **argv) {
+	//定义
+    std::unordered_map<int, std::string> map;
+	//插入数据
+    map.insert(std::make_pair(1, "Scala"));
+	map.insert(std::make_pair(2, "Haskell"));
+	std::unordered_map<int, std::string>::iterator it;
+	//数据查找
+    if ((it = map.find(6)) != map.end()) {
+		std::cout << it->second << std::endl;
+	}
+    //数据遍历
+	for (auto i : map){
+		std::cout << i.first << " : " << i.second << std::endl;
+	}
+	return 0;
+}
+```
+
+
+
 ### 训练题
 
 #### [有效的字母异位词](https://leetcode-cn.com/problems/valid-anagram/description/)
