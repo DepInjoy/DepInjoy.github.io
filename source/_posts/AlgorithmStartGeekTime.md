@@ -90,27 +90,11 @@ def flib(n)
 ####  [有效的字母异位词](https://leetcode.com/problems/valid-anagram/description/)
 
 ```
-思路一：
-	将字符串按照字典序进行排序，最快的时快排，对应的时间复杂度为O(NlogN)。
-思路二：
-	利用Map进行字符数计数，判断两个map是否一致。对应的时间复杂度为O(N)。
+
 ```
 
 ```C++
-class Solution {
-public:
-    bool isAnagram(string s, string t) {
-        unordered_map<char, int> hash4s;
-        unordered_map<char, int> hash4t;
-        for(int i = 0;i < s.size();i++){
-            hash4s[s[i]]++;
-        }  
-        for(int i = 0;i < t.size();i++){
-            hash4t[t[i]]++;
-        }
-        return hash4s == hash4t;
-    }
-};
+
 ```
 
 
