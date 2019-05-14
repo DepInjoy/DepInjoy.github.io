@@ -7,7 +7,40 @@ tags: [设计模式]
 description: 策略模式定义了算法家族并分别封装起来，让他们之间可以相互替换，此模式让算法的变化不会影响算法客户。
 ---
 
-- [图说设计模式](https://design-patterns.readthedocs.io/zh_CN/latest/index.html)
+​	
+
+## [策略模式](https://design-patterns.readthedocs.io/zh_CN/latest/behavioral_patterns/strategy.html)
+
+​	策略模式定义了系列的算法方法，从概念上来看，这些算法完成的都是相同的工作，只是实现方式不同，它可以以相同的方式调用所有的算法，减少各中算法类与使用算法类之间的耦合，使得算法独立于使用它的客户而变化。
+
+[策略模式实现模板](https://github.com/DepInjoy/BaseHouse/blob/master/DesignPattern/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F%E5%AE%9E%E7%8E%B0%E6%A8%A1%E6%9D%BF.cpp) [以商场打折为例展示策略模式的使用](https://github.com/DepInjoy/BaseHouse/blob/master/DesignPattern/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F-%E5%95%86%E5%9C%BA%E6%89%93%E6%8A%98.cpp)
+
+
+
+### 优/劣势
+
+#### 优势
+
+- 策略模式的Strategy类层次为Context定义了一系列的可供重用的算法或行为。继承有助于析取出这些算法中的公共功能。
+- **完全符合“开闭原则”。**用户可以在不修改原有系统基础上选择算法或行为，也可以灵活增加新算法或行为。
+- **简化了单元测试。**每个算法都有自己的类，可以通过自己的接口单独测试。
+- 提供了管理相关的算法族的办法。
+
+#### 劣势
+
+- 客户端必须知道所有的策略类，并自行决定使用哪一个策略类。
+
+#### 使用场景
+
+​	**适用于算法的封装，**它可以用来封装几乎任何类型的规则，在实践中需要在不同时间应用不同的业务规则时，就可以考虑用策略模式。
+
+### 
+
+
+
+
+
+- 图说设计模式](https://design-patterns.readthedocs.io/zh_CN/latest/index.html)
 
 
 
