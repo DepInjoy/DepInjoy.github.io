@@ -1,11 +1,130 @@
 ---
 layout: post
-title: 参数传递和高级指针
+title: 函数实现
 date: 2017-3-18 18:04
 category: CPP
 tags: [CPP、C]
 description: 本文通过实例的形式展示了指针和二级指针(指针的指针)间操作的不同，在函数内部，二级指针可以更改指针指向的地址而一级指针只能更改指针指向对象的值。同时介绍了函数引用参数传递和值传递。
 ---
+
+
+
+### [函数重载](https://www.tutorialspoint.com/cplusplus/cpp_overloading.htm)
+
+函数重载有两种形式：**形参数量不同或形参类型不同。**
+
+```C++
+void print(int val){
+	std::cout << "The Int Value is " << val << std::endl;
+}
+void print(const int& val){
+	std::cout << "The const int Reference Value is " << val << std::endl;
+}
+```
+
+其中，下面的函数不可以进行重载：
+
+- **main()函数不可重载。** 
+
+
+
+#### 重载和const形参
+
+- 无法将拥有顶层const的形参和非顶层const的形参区分开
+
+```C++
+void print(int val)
+void print(const int val);		//error，重复定义
+```
+
+- 如果形参是某种类型的指针或者引用，可以通过其指向的是常量对象还是非常量对象进行区分。非常量可以转化为const对象，而当我们传递一个非常亮对象或者非常量对象指针时，编译器优选非常量版本函数。
+
+```C++
+void print(int& val){			//优先
+	std::cout << "The int Reference Value is " << val << std::endl;
+}
+void print(const int& val){
+	std::cout << "The const int Reference Value is " << val << std::endl;
+}
+```
+
+```C++
+void print(int* val){			//优先
+	std::cout << "The int Reference Value is " << *val << std::endl;
+}
+void print(const int* val){
+	std::cout << "The const int Reference Value is " << *val << std::endl;
+}
+```
+
+#### 函数匹配
+
+调用重载函数可能会出现三种结果:
+
+- 编译器找到与实参最佳匹配的函数，并生成调用该函数的代码。
+- 找不到与任何一个调用实参匹配的，此时编译器发出**无匹配（no mach）**的错误。
+- 有多于一个函数可匹配，但每个都不是最佳选择，此时会产生**二义性调用（ambiguous call）**。
+
+
+
+### 函数作用域
+
+- 如果我们在函数内层声明函数，将隐藏外层作用域声明的同层实体。
+
+```C++
+void print(int* val){
+	std::cout << "The int Reference Value is " << *val << std::endl;
+}
+void verifyScope()
+{
+   	//函数内声明函数，外层的print定义被隐藏
+	void print(std::string name);
+	int* tmp = new int(8);
+	print(tmp);						//error
+	delete tmp；
+}
+```
+
+
+
+### 特殊语言用途特性
+
+#### 宏定义
+
+​	宏定义只是进行简单的文本替换，既不会进行安全简单，也无法像函数那样在栈上创建新的空间。
+
+#### 内联函数
+
+​	内联函数通常是在每个调用点上“内联地”展开。而**内联函数只是箱变一起发出一个请求，编译器可以选择忽略这个请求，适用于优化规模较小，流程直接、调用频繁的函数**。可以被多次定义，但是需要多个定义完全一致。
+
+```C++
+inline const std::string& shorterString(const std::string& s1, const std::string& s2){
+	return s1.size() <= s2.size() ? s1 : s2;
+}
+/*
+	编译中将展开为如下形式：
+	std::cout << (s1.size() <= s2.size() ? s1 : s2) << std::endl;
+*/
+std::cout << shorterString(s1, s2) << std::endl;
+```
+
+
+
+#### constexpr函数
+
+​	constexpr函数是指可以用常量表达式的函数。在执行初始化时，编译器将constexpr函数调用直接替换为其结果值。同时为了编译过程中可以随时展开，constexpr函数被隐式转化为内联函数。它可以被多次定义，但是需要多个定义完全一致。constexpr函数需要遵循以下几项规定：
+
+- 函数返回类型以及所有的形参都必须是字面值类型。
+- 函数体中必须有且只有一条return语句。
+
+```C++
+#include <stdexcept>
+constexpr int sz(){
+	return 12;
+}
+/*允许返回非常量*/
+constexpr int scale(size_t s){	return sz() * s;}
+```
 
 
 
