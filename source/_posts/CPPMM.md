@@ -16,9 +16,6 @@ description: 本文主要描述C++中内存的申请、释放的方法。
 - **栈：函数内的非static对象。**
 - **堆：动态分配的对象。**对于动态分配的对象，如果未及时释放会造成内存泄漏，而在尚有指针引用内存时便释放了该内存，会引起非法内存指针问题。
 
-<<<<<<< HEAD
-=======
-
 
 ### 静态变量
 
@@ -31,14 +28,14 @@ description: 本文主要描述C++中内存的申请、释放的方法。
 [消息的分级提示](https://github.com/DepInjoy/BaseHouse/blob/master/Qt/GradedMessagePrompt/src/Bubble.cpp)实现在窗口的右下角显示进行消息的提示。该功能中每次弹出新消息需要知道上一个提示窗的y，通过定义一个静态变量
 
 ```C++
-
+static int totalHeight;
 ```
 
 该变量虽在Bubble中定义却从不属于任何一个Bubble。
 static变量需要在类外进行初始化
 
-```
-
+```C++
+int Bubble::totalHeight = 0;
 ```
 
 
@@ -48,7 +45,10 @@ static变量需要在类外进行初始化
 下面的这个示例正是利用这个特性实现全局变量的保存。
 
 ```C
-
+struct data{
+    int areaid;
+    int menuid;
+};
 ```
 
 ```C
@@ -68,7 +68,6 @@ int main(int argc, char *argv[])
 
 
 
->>>>>>> 3f5c3083c0555e3122d30a9554199bed76a20da0
 ### 动态内存申请
 
 在实际的使用中，我们可以通过两种方式来申请内存：
