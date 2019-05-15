@@ -105,5 +105,26 @@ void LevelorderTraversal ( BinTree BT )
 }
 ```
 
+#### 二叉搜索树
 
+​	二叉搜索树(Binary Search Tree)，也称有序二叉树(Ordered Binary Tree)以及排序二叉树(Sorted Binary Tree)，指一颗空树或者具有下面性质的二叉树：
+
+- 左子树上的所有节点的值都小于它的根节点的值。
+- 右子树上的所有节点的值都小于它的根节点的值。
+
+- 递归地，左子树和右子树也分别为二叉搜索树。
+
+
+
+### 训练题
+
+#### [二叉树的最近公共祖先](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-tree/)
+
+[LeetCode实现](https://github.com/DepInjoy/BaseHouse/blob/master/Interview/%E6%A0%91/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88.cpp)
+
+
+
+#### [二叉搜索树的最近公共祖先](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-search-tree/)
+
+[LeetCode实现](https://github.com/DepInjoy/BaseHouse/blob/master/Interview/%E6%A0%91/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E7%9A%84%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88.cpp)
 

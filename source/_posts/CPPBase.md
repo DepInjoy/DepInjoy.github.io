@@ -9,9 +9,9 @@ description: 介绍一些C语言基础知识。
     2、运算符优先级
 ---
 
-[内联函数 (C++)Inline Functions](https://docs.microsoft.com/zh-cn/cpp/cpp/inline-functions-cpp?view=vs-2015) 
+​	
 
-​	C++语言属于静态数据类型语言，在编译时进行数据类型检查，在编译时就必须知道数据的类型。可以在运行时通过typeid运算符返回的type_info类型的对象。
+​	**C++语言属于静态数据类型语言，在编译时进行数据类型检查，**在编译时就必须知道数据的类型。可以在运行时通过typeid运算符返回的type_info类型的对象。
 
 ```C++
 #include <iostream>
@@ -25,24 +25,69 @@ int main(int argc, char* argv[])
 
 
 
-C++语言优势：
+### 程序结构
 
-- 便于软件重用。
+C++程序主要由两部分组成：
 
-  C++软件重用主要体现在以下几个方面：
+- **预处理程序指令。**如```#include <iostream>```,其中```<>```表示在标准库查找库文件。```""```表示首先在当前目录下查找库文件，如果查找不到则到存储标准库的目录下查找。
 
-  1. 面向对象的思想：继承、多态、标准类库。
-  2. 泛型编程思想：模板机制和标准模板库STL。
+- **主要函数**。```main()```
 
-[算术运算符](http://www.cplusplus.com/doc/tutorial/operators/)
+```C++
+/*
+	#:						 Hash标志
+	include：				预处理指令
+	iostream：				库文件
+*/
+#include <iostream>
+int main(){
+	std::cout << "Hello World " << std::endl;
+	return 0;
+}
+//编译指令：gcc main.cpp -o main.out
+```
 
-[前缀/后缀递增/减运算符](https://en.cppreference.com/w/cpp/language/operator_incdec)
+​	C++编译器对类的处理包含两步：**编译成员声明；之后成员函数体(如果存在)。**
 
-[数组Array](https://www.tutorialspoint.com/cplusplus/cpp_arrays.htm)
 
-#### x++和++x、x--和--x的区别
 
-x++是先对x执行运算，再对x自增1，++x是先对x自增1，再对x执行运算。同样地，x--是先对x执行运算，再对x自减1，--x是先对x自减1，再对x执行运算。
+### 优/劣势
+
+#### 优势
+
+##### 1、便于软件重用。C++软件重用主要体现在以下几个方面：
+
+- **面向对象的思想**：继承、多态、标准类库。
+
+- **泛型编程思想**：模板机制和标准模板库STL。
+
+
+
+### 编程入门
+
+#### 编码风格
+
+- [微软编码风格指南](https://github.com/Microsoft/AirSim/blob/master/docs/coding_guidelines.md)
+
+- [Google编码风格指南-英文版](https://google.github.io/styleguide/cppguide.html)
+
+- [Google编码风格指南-中文版](https://zh-google-styleguide.readthedocs.io/en/latest/google-cpp-styleguide/)
+
+
+
+#### [算术运算符](http://www.cplusplus.com/doc/tutorial/operators/)
+
+##### [前缀/后缀递增/减运算符](https://en.cppreference.com/w/cpp/language/operator_incdec)
+
+前缀自增/减运算符：先将对象的值增加/减少，然后返回引用。
+
+后缀自增/减运算符：首先，复制对象并创建对象的一个临时副本；然后将对象的值自增/减；最后返回副本。
+
+
+
+###### x++和++x、x--和--x的区别
+
+​	x++是先对x执行运算，再对x自增1，++x是先对x自增1，再对x执行运算。同样地，x--是先对x执行运算，再对x自减1，--x是先对x自减1，再对x执行运算。
 
 ```C
 #include <stdlib.h>
@@ -94,5 +139,12 @@ int main(int argc, char* argv[])
 }
 ```
 
-##### 运算符优先级
+##### [数组Array](https://www.tutorialspoint.com/cplusplus/cpp_arrays.htm)
+
+
+
+
+
+
+
 
