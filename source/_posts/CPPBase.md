@@ -143,6 +143,42 @@ int main(int argc, char* argv[])
 
 
 
+### 初始化的方式
+
+#### 拷贝初始化
+
+​	使用=去初始化一个变量，此时编译器会将等号右边的值拷贝给新创建的对象中。
+
+```C++
+std::string s = "Hiya";
+```
+
+​	对于多个值也可以使用拷贝初始化。
+
+```c++
+/*
+	实际执行过程：
+	std::string temp = std::string(3, 'H');
+	std::string s0 = temp;
+*/
+std::string s0 = std::string(3, 'H');		//HHH
+```
+
+
+
+#### 直接初始化
+
+​	不使用=，则执行的是直接初始化。
+
+```C++
+std::string s("Hiya");
+std::string s0(3, 'H');
+```
+
+#### 
+
+
+
 
 
 
