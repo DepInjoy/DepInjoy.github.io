@@ -2,7 +2,7 @@
 layout: post
 title: 设计模式：策略模式
 date: 2019-2-11 22：06
-category:设计模式
+category: 设计模式
 tags: [设计模式]
 description: 策略模式定义了算法家族并分别封装起来，让他们之间可以相互替换，此模式让算法的变化不会影响算法客户。
 ---

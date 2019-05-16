@@ -2,7 +2,7 @@
 layout: post
 title: 设计模式：软件设计原则
 date: 2019-2-11 21：06
-category:设计模式
+category: 设计模式
 tags: [设计模式]
 description: 本文涉及到软件设计时，常常用到的一些原则：单一职责原则(SRP)、开放封闭原则等等。
 ---

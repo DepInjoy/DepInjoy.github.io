@@ -2,7 +2,7 @@
 layout: post
 title: 设计模式：原型模式
 date: 2019-2-13 21：06
-category:设计模式
+category: 设计模式
 tags: [设计模式]
 description: 
 ---

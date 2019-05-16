@@ -2,7 +2,7 @@
 layout: post
 title: 设计模式：单例
 date: 2019-4-27 20:04
-category:设计模式
+category: 设计模式
 tags: [设计模式]
 description:介绍了单例模式的几种实现方式。
 ---

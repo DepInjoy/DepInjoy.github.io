@@ -1,8 +1,8 @@
 ---
 layout: post
-title: 设计模式：工厂模式
+title: 设计模式-工厂模式
 date: 2019-2-11 21：06
-category:设计模式
+category: 设计模式
 tags: [设计模式]
 description: 本文以计算器为例，首先以简单的switch进行实现，分析其耦合度高，不便于复用和维护，并通过面向对象编程实现Operation父类，再生成OperationAdd、OperationSub、OperationMulti、OperationDiv分别对应于加法、减法、乘法和除法的处理，并通过简单工厂进行测试验证。
 ---
