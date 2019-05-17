@@ -87,7 +87,7 @@ def flib(n)
 
 ![](..\_img\算法和数据结构\极客时间\Hash碰撞.png)
 
-####  [有效的字母异位词](https://leetcode.com/problems/valid-anagram/description/)
+#### 
 
 ```
 
@@ -99,183 +99,21 @@ def flib(n)
 
 
 
-#### [计算两数之和](https://leetcode-cn.com/problems/two-sum/)
-
-```
-思路一：
-	暴力求解：
-		执行两层for循环，对应的时间复杂度为O(N^2)
-思路二：
-	利用HashMap进行查找，假设求x+y=9,则y=9-x。对应的时间复杂度为O(N)。
-		for x (nums[0]->nums[len])			O(N)
-			map.find(9 - x)					O(1)
-```
-
-```C++
-class Solution {
-public:
-    vector<int> twoSum(vector<int>& nums, int target) {
-        vector<int> res;
-        //创建HashMap
-        std::unordered_map<int, int> tmp;
-        for(int i = 0; i < nums.size();i++){
-            auto num1 = tmp.find(target - nums[i]);
-            //查找到符合条件的数据
-            if(num1 != tmp.end()){
-                res.push_back(i);
-                res.push_back(num1->second);
-            }
-            //将(数据，索引)添加入HashMap。
-           tmp[nums[i]] =  i;
-        }
-       return res; 
-    }
-};
-```
-
-
-
-#### [三个数之和](https://leetcode-cn.com/problems/3sum/)
+#### 
 
 ##### 推荐解法
 
 ![](..\_img\算法和数据结构\极客时间\三个数和解法2.png)
 
-```
-思路一：
-	暴力求解，进行三个循环，对应的时间复杂度为O(N^3)
-思路二：
-	利用Set进行求解。
-	for x = (nums[0] -> nums[len])				O(N)
-	for y = (nums[0] -> nums[len])				O(N)
-	z = -(x+y),转化为求两数之和问题。	   	     	O(1)
-思路三：
-	sort-find求解，可以节省空间。
-	对nums进行排序，最快是快排。					O(NlogN)
-	for x = (nums[0] -> nums[len])				O(N)
-		y + z = sum - x;
-		y = nums[0], z = nums[len]
-		根据y+z的和移动y或者z		    		   O(N)
+
+
+```C++
+
 ```
 
 ```C++
- class Solution {
-public:
-    vector<vector<int>> threeSum(vector<int>& nums) {
-        vector<vector<int>> res;
-        if(nums.size() < 3)
-            return res;
-        
-        sort(nums.begin(), nums.end());
-        for(int i = 0;i < nums.size() - 2;i++){
-            //避免重复
-            if(i > 0 && nums[i] == nums[i - 1])
-                continue;
-            
-            int target = 0 - nums[i];
-#if 1
-            int low = i + 1;
-            int high = nums.size() - 1;
-            while(low < high){
-                if(nums[low] + nums[high] > target){
-                    high--;
-                }else if(nums[low] + nums[high] < target){
-                    low++;
-                }else{
-                    //查找到符合条件的
-                    vector<int> xyz;
-                    xyz.push_back(nums[i]);
-                    xyz.push_back(nums[low]);
-                    xyz.push_back(nums[high]);
-                    res.push_back(xyz);
-                    low++;
-                    //避免重复
-                    while(nums[low] == nums[low - 1] && low < high){
-                        low++;
-                    }
-                }
-            }
-#else
-            //缺少避免重复的方法
-            set<int> tmp;
-            for(int j = i + 1; j < nums.size();j++){
-                auto num = tmp.find(target - nums[j]);
-                if(num != tmp.end()){
-                    vector<int> xyz;
-                    xyz.push_back(nums[i]);
-                    xyz.push_back(nums[j]);
-                    xyz.push_back(*num);
-                    res.push_back(xyz);
-                }
-                tmp.insert(nums[j]);
-            }
-#endif
-        }
-        return res;
-    }
-};
-```
 
 
-
-### 二叉搜索树
-
-![](..\_img\算法和数据结构\极客时间\二叉搜索树.png)
-
-#### [二叉树的最近公共祖先](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-tree/)
-
-```C++
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
- * };
- */
-class Solution {
-public:
-    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-        if(root == NULL || root == p || root == q)
-            return root;
-        TreeNode* left = lowestCommonAncestor(root->left, p, q);
-        TreeNode* right = lowestCommonAncestor(root->right, p, q);
-        if(left == NULL){		//不在左子树，则在右子树
-            return right;
-        } else{					//存在在左子树
-            if(right == NULL) 	//不存在在右子树，则存在在左子树
-                return left;
-            else				//既存在在左子树也存在在右子树，则为root
-                return root;
-        }
-    }
-};
-```
-
-#### [二叉搜索树的最近公共祖先](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-search-tree/)
-
-```C++
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
- * };
- */
-class Solution {
-public:
-    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-        if(p->val < root->val && q->val < root->val)		//只存在于左子树
-            return lowestCommonAncestor(root->left, p, q);
-        else if(p->val > root->val && q->val > root->val)	//只存在于右子树
-            return lowestCommonAncestor(root->right, p, q);
-        else												//跨在两者之间，等于根节点
-            return root;
-    }
-};
 ```
 
 

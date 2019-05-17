@@ -23,9 +23,15 @@ description:
 
 #### 顺序容器
 
-##### vector
+##### [vector](http://www.cplusplus.com/reference/vector/vector/vector/)
 
 ​	vector可以看做动态扩容的数组，vector和数组的区别在于数组在声明时需要指定数组长度，而vector会根据运行情况动态分配内存，并且一般会多申请一些内存。**vector在尾部增加或删除元素具有更好的性能**。
+
+- assign
+- push_back
+- insert
+- emplace
+- clear
 
 ##### deque
 

@@ -9,7 +9,7 @@ description: 以实例的形式描述对C++模板的理解。
 
 
 
-模板是泛型编程的基础，一个模板是创建类或函数的蓝图（公式）。
+​	[模板](http://www.cplusplus.com/doc/oldtutorial/templates/)是泛型编程的基础，一个模板是创建类或函数的蓝图（公式）。
 
 ## 函数模板
 
