@@ -23,6 +23,14 @@ int main(int argc, char* argv[])
 }
 ```
 
+程序编译
+
+```C++
+		     第三方lib ---------
+		     				   |---> 链接器 -->可执行文件
+.cpp文件  --> object文件--------   
+```
+
 
 
 ### 程序结构
@@ -64,6 +72,47 @@ int main(){
 
 
 ### 编程入门
+
+#### 面向对象编程和面向过程编程的区别
+
+```C++
+#include <iostream>
+class Circle
+{
+public:
+	double r;
+	double pi = 3.1415926;
+	double s = pi * r * r;
+	double getArea(void){ return pi * r * r; }
+};
+
+int main(int argc, char *argv[])
+{
+	Circle circle;
+	double tmp = circle.r;
+	std::cout << "Before change " << std::endl;
+	std::cout << "Area is " << circle.pi * tmp * tmp << std::endl << std::endl;
+	circle.r = 10;
+	std::cout << "After Change " << std::endl;
+	std::cout << "Area is " << circle.s << std::endl;			//random value
+	std::cout << "Area is " << circle.getArea() << std::endl;	//right value
+	system("pause");
+	return 0;
+}
+```
+
+运行结果：
+
+```C++
+Before change
+Area is 2.69149e+124
+
+After Change
+Area is 2.69149e+124
+Area is 314.159
+```
+
+
 
 #### 编码风格
 
