@@ -18,7 +18,7 @@ description: 介绍一些C语言基础知识。
 int main(int argc, char* argv[])
 {
 	int a = 0;
-	std::cout << typeid(a).name() << std::endl;
+	std::cout << typeid(a).name() << std::endl;			//int
 	return 0;
 }
 ```
@@ -39,7 +39,7 @@ C++程序主要由两部分组成：
 
 - **预处理程序指令。**如```#include <iostream>```,其中```<>```表示在标准库查找库文件。```""```表示首先在当前目录下查找库文件，如果查找不到则到存储标准库的目录下查找。
 
-- **主要函数**。```main()```
+- **主函数**。```main()```
 
 ```C++
 /*
@@ -130,7 +130,7 @@ Area is 314.159
 
 前缀自增/减运算符：先将对象的值增加/减少，然后返回引用。
 
-后缀自增/减运算符：首先，复制对象并创建对象的一个临时副本；然后将对象的值自增/减；最后返回副本。
+后缀自增/减运算符：首先，复制对象并创建对象的一个临时副本；然后将对象的值自增/减；最后返回副本。在C++中临时变量是右值，右值不可以进行取地址操作。
 
 
 
@@ -149,6 +149,9 @@ int main(int argc, char* argv[])
     i = 2;
 	printf("%d %d\n", i, i++);			//3 2
 	
+    i = 2;
+	printf("%d %d\n", i++, i);			//2,3
+    
     i = 2;
 	i = (++i) + (++i) + (++i) + (++i);
 	printf("%d n", i);					//24
@@ -220,11 +223,9 @@ std::string s0 = std::string(3, 'H');		//HHH
 ​	不使用=，则执行的是直接初始化。
 
 ```C++
-std::string s("Hiya");
-std::string s0(3, 'H');
+std::string s("Hiya");		//Hiya
+std::string s0(3, 'H');		//HHH
 ```
-
-#### 
 
 
 
