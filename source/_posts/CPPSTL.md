@@ -32,6 +32,8 @@ description:
 - insert
 - emplace
 - clear
+- erase
+- pop_back
 
 ##### deque
 

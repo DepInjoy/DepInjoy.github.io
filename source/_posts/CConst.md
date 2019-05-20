@@ -18,7 +18,7 @@ char *tmp = "change";
 p = tmp;
 ```
 编译时会出现warning: assignment discards ‘const’ qualifier from pointer target type [enabled by default]
-```
+```C
 const char * p = "hello";
 char *tmp = "change";
 p = tmp;

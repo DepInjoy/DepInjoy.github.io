@@ -265,7 +265,11 @@ void main(void)
 	tmp0 = "Next";
 	std::cout << tmp0.data() << " " << s.data() << std::endl;	//Next Next
 	std::string *tmp1 = const_cast<std::string*>(&s);
-	std::cout << tmp1->data() << std::endl;						//Next
+	std::cout << tmp1->data() << " " << s.data() << std::endl;	//Next
+
+	std::string& tmp2 = (std::string&)s;
+	tmp2 = "Change";
+	std::cout << tmp2.data() << " " << s.data() << std::endl;	//Change Change
 	system("pause");
 }
 ```

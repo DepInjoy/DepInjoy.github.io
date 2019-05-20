@@ -41,9 +41,7 @@ description: 动态链接库的生成和链接方式。
 #ifndef __STIME_H__
 #define __STIME_H__
 #include <stdint.h>
-
-uint64_t micro64(void);                                                                                     
-
+uint64_t micro64(void);
 #endif
 ```
 
@@ -51,7 +49,7 @@ uint64_t micro64(void);
 #include <stdio.h>
 #include "stime.h"
 
-int main(int argc,char *argv[])                                                                                                                                                                              
+int main(int argc,char *argv[])                             
 {                    
     fprintf(stdout,"time %lu\n",micro64());
     return 0;        

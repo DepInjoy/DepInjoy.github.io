@@ -4,7 +4,7 @@ title: 设计模式：原型模式
 date: 2019-2-13 21：06
 category: 设计模式
 tags: [设计模式]
-description: 
+description: 简单介绍了原型设计模式，并提供了利用原型设计模式实现的简历制作相关程序实现。
 ---
 
 ​	

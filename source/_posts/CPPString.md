@@ -2,9 +2,9 @@
 layout: post
 title: string用法总结
 date: 2018-3-18 18:00
-category:CPP
+category: CPP
 tags: [CPP]
-description: 
+description: 介绍了一些String常见的使用方法。
 ---
 
 ​	C++的string类实际上是一个类模板。
