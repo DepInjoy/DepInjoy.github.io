@@ -114,4 +114,83 @@ description: 本文以计算器为例，首先以简单的switch进行实现，�
 
 ### 抽象工厂模式
 
-P140
+​	抽象工厂模式(Abstract Factory)提供一个创建一系列相关或相互依赖对象的接口，而无需指定它们具体的类。
+
+[抽象工厂模式实现](https://github.com/DepInjoy/BaseHouse/blob/master/DesignPattern/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F-%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8E%A5%E5%85%A5.cpp)
+
+
+
+#### 优点(Why)
+
+- **易于交换产品系列**。很好地利用了开放封闭原则和依赖倒转原则。
+
+- **使得具体的创建实例过程与客户端分离，**客户端通过它们的抽象接口操纵实例，产品的具体类名也被具体工厂实现分离，不会出现在客户端代码中。
+
+
+
+### 模式改进
+
+
+
+#### 简单工厂模式来改进抽象工厂
+
+```C++
+class DataAccess
+{
+public:
+	User* createUser(void){
+		User* result = NULL;
+		switch (_dataAccessType)
+		{
+		case SQL_TYPE:
+			result = new SQLUser();
+			break;
+		case ACCESS_TYPE:
+			result = new AccessUser();
+			break;
+		default:
+			break;
+		}
+		return result;
+	}
+private:
+	typedef enum{
+		SQL_TYPE,
+		ACCESS_TYPE,
+	}__dataAccessType;
+
+	__dataAccessType _dataAccessType = SQL_TYPE;
+};
+```
+
+这样对客户端隐藏了SQL、Access相关字样，并达到了解耦合的目的。客户端实现代码：
+
+```C++
+int main(int argc, char* argv[])
+{
+
+	DataAccess* tmp = new DataAccess();
+	User* user0 = tmp->createUser();
+	User* user1 = new SQLUser();
+	user0->getUser(8);
+	user0->insertUser(user1);
+
+	delete user0;
+	delete user1;
+	delete tmp;
+	
+	return 0;
+}
+```
+
+
+
+#### 反射+抽象工厂数据访问程序
+
+​	利用反射技术可以去除switch或者if判断来基础耦合，由于C++不支持反射技术，详细的实现示例，暂且搁置。
+
+
+
+#### 反射+配置文件实现数据访问程序
+
+​	利用配置文件解决获取数据库类型问题。同样地，由于C++不支持反射技术，详细的实现示例，暂且搁置。
