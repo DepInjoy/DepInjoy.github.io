@@ -4,11 +4,11 @@
 
 
 
-### 观察者模式
+### 观察者模式(https://design-patterns.readthedocs.io/zh_CN/latest/behavioral_patterns/observer.html)
 
 ​	观察者模式，也称Publish/Subscribe模式，定义了一种一对多的依赖关系，让多个观察者对象同时监听一个主体对象。这个主题对象在状态发生改变时，会通知所有观察者对象，使它们能够自动更新自己。**观察者模式实质是在解耦和，让耦合的双方都依赖于抽象，而不是依赖于具体，从而使得各自的变化都不会影响另外一边的变化。**
 
-[观察者模式示例代码](https://design-patterns.readthedocs.io/zh_CN/latest/behavioral_patterns/observer.html) 
+[观察者模式示例代码](https://github.com/DepInjoy/BaseHouse/blob/master/DesignPattern/%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F/%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F%E7%A4%BA%E4%BE%8B%E4%BB%A3%E7%A0%81.cpp)  
 
 
 
