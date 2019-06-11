@@ -1,5 +1,10 @@
 ---
-
+layout: post
+title: 设计模式：观察者模式
+date: 2019-5-24 18：06
+category: 设计模式
+tags: [设计模式]
+description: 观察者模式，也称Publish/Subscribe模式，定义了一种一对多的依赖关系，让多个观察者对象同时监听一个主体对象。
 ---
 
 
