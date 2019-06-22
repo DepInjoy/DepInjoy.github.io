@@ -33,7 +33,8 @@ public:
 		return Singleton::_instance;
 	}
 private:
-    //禁止copy
+    //禁止私自构造和copy
+    Singleton(){};
     Singleton(const Singleton& );
     Singleton& operator=(const Singleton& );
 	static Singleton* _instance;
@@ -62,7 +63,8 @@ public:
 		return Singleton::_instance;
 	}
 private:
-    //禁止copy
+    //禁止构造和copy
+    Singleton(){};
     Singleton(const Singleton& );
     Singleton& operator=(const Singleton& );
 	static Singleton* _instance;
@@ -96,8 +98,12 @@ public:
 		return Singleton::_instance;
 	}
 private:
+    //禁止构造和copy
+    Singleton(){};
+    Singleton(const Singleton& );
+    Singleton& operator=(const Singleton& );
 	static Singleton* _instance;
-    
+    //析构操作
     ~Singleton(){
 		std::cout << "Singleton::~Singleton" << std::endl;
 	}
@@ -140,6 +146,10 @@ public:
 		return instance.get();
 	}
 private:
+    //禁止构造和copy
+    Singleton(){};
+    Singleton(const Singleton& );
+    Singleton& operator=(const Singleton& );
 	static std::shared_ptr<Singleton> instance;
 };
 std::shared_ptr<Singleton> Singleton::instance = NULL;
@@ -167,6 +177,10 @@ class Singleton
 private:
 	static Singleton instance;
 public:
+    //禁止构造和copy
+    Singleton(){};
+    Singleton(const Singleton& );
+    Singleton& operator=(const Singleton& );
 	static Singleton& getInstance() {
 		return instance;
 	}
@@ -188,6 +202,11 @@ public:
 		static Singleton2 instance;
 		return instance;
 	}
+private:
+    //禁止构造和copy
+    Singleton(){};
+    Singleton(const Singleton& );
+    Singleton& operator=(const Singleton& );
 };
 ```
 
