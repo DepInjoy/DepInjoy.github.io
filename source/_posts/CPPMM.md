@@ -10,7 +10,98 @@ description: 本文主要描述C++中内存的申请、释放的方法。
 	3、智能指针
 ---
 
+[C/C++内存管理详解](<https://chenqx.github.io/2014/09/25/Cpp-Memory-Management/>)
 
+```
+内存泄漏不是系统无法回收那片内存，而是你自己的应用程序无法使用那片内存。当你程序结束时，你所有分配的内存自动都被系统回收，不存在泄漏问题。但是在你程序的生命期内，如果你分配的内存都不回收，你将很快没内存使用。”再用自己的一句话来概括的话就是：操作系统本身就有内存管理的职责，一般而言，用malloc、new操作分配的内存，在进程结束后，操作系统是会自己的回收的。但某些系统态的资源，用特殊的系统API申请的内存就不一定了，比如：linux中的shmget申请的共享内存，就与进程结束无关了。
+```
+
+内存泄漏造成的影响：
+
+```
+从性能不良（并且逐渐降低）到内存完全用尽。 更糟的是，泄漏的程序可能会用掉太多内存，以致另一个程序失败，而使用户无从查找问题的真正根源。 
+```
+
+
+
+[C/C++内存泄漏检测](<https://www.cnblogs.com/skynet/archive/2011/02/20/1959162.html>)
+
+```C++
+#define _CRTDBG_MAP_ALLOC
+#include <iostream>
+#include <string>
+#include <stdlib.h>
+#include <crtdbg.h>
+int main(int argc, char* argv[])
+{
+	char *tmp = new char[16];
+	//delete []tmp;
+	//检测是否有内存泄漏
+	_CrtDumpMemoryLeaks();
+	system("pause");
+	return 0;
+}
+```
+
+
+
+```
+Detected memory leaks!
+Dumping objects ->
+{159} normal block at 0x00000000003B2C30, 16 bytes long.
+ Data: <                > CD CD CD CD CD CD CD CD CD CD CD CD CD CD CD CD 
+Object dump complete.
+```
+
+
+
+
+
+```C++
+#define _CRTDBG_MAP_ALLOC
+#include <iostream>
+#include <string>
+#include <stdlib.h>
+#include <crtdbg.h>
+int main(int argc, char* argv[])
+{
+	_CrtMemState s1, s2, s3;
+	_CrtMemCheckpoint(&s1);
+	char *tmp = new char[16];
+	//delete []tmp;
+	_CrtMemCheckpoint(&s2);
+	//比较这两个内存状态是否存在差异
+	if (_CrtMemDifference(&s3, &s1, &s2))
+		_CrtMemDumpStatistics(&s3);				//如果有内存泄漏则打印消息，否则无消息打印
+	//检测是否有内存泄漏
+	_CrtDumpMemoryLeaks();
+	system("pause");
+	return 0;
+}
+```
+
+```
+0 bytes in 0 Free Blocks.
+16 bytes in 1 Normal Blocks.
+0 bytes in 0 CRT Blocks.
+0 bytes in 0 Ignore Blocks.
+0 bytes in 0 Client Blocks.
+Largest number used: 0 bytes.
+Total allocations: 16 bytes.
+Detected memory leaks!
+Dumping objects ->
+{159} normal block at 0x0000000000262C30, 16 bytes long.
+ Data: <                > CD CD CD CD CD CD CD CD CD CD CD CD CD CD CD CD 
+Object dump complete.
+```
+
+
+
+[内存泄漏概念与测试工具介绍](<https://blog.csdn.net/sishuihuahua/article/details/84726921>)
+
+[在 Linux 平台中调试 C/C++ 内存泄漏方法](<https://www.ibm.com/developerworks/cn/linux/l-cn-memleak/index.html>)
+
+ [Rational Purify 使用及分析实例](<https://www.ibm.com/developerworks/cn/rational/r-cail/index.html>) 
 
 我们程序中的变量存储于：
 

@@ -169,7 +169,7 @@ std::shared_ptr<Singleton> Singleton::instance = NULL;
 > - 对于non-local static对象，在main()函数开始前就已经被构造出来，并在main()函数结束后被析构。
 >
 
-​	基于以上的理论分析，```instance```属于no-local static对象在main函数之前被初始化，所以不存在线程安全的问题，但是在不同的编译中初始化顺序未定义的，即```static Singleton instance```和```static Singleton& getInstance()```两者的初始化顺序不确定，如果在```instance```完成初始化之前调用```getInstance()```会返回一个未定义的实例。
+​	基于以上的理论分析，`instance`属于no-local static对象在main函数之前被初始化，所以不存在线程安全的问题，但是在不同的编译中初始化顺序未定义的，即`static Singleton instance`和`static Singleton& getInstance()`两者的初始化顺序不确定，如果在`instance`完成初始化之前调用`getInstance()`会返回一个未定义的实例。
 
 ```C++
 class Singleton
